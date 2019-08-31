@@ -1,5 +1,22 @@
 <?php
 
+namespace P5blog;
+
+require_once 'router.php';
+
+session_start();
+
+if (!isset($_SESSION['name'])) {
+    $_SESSION['name'] = '';
+    $_SESSION['role'] = '';
+}
+
+//require 'config.php';
+require __DIR__.'/vendor/autoload.php';
+$router = new Router();
+$router->start();
+
+/*
 require_once __DIR__.'/bootstrap.php';
 
 // Sample data
@@ -12,4 +29,4 @@ $foo = [
 ];
 
 // Render our view
-echo $twig->render('index.html.twig', ['foo' => $foo] );
+echo $twig->render('index.html.twig', ['foo' => $foo] );*/
