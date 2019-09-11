@@ -3,7 +3,9 @@
 namespace P5blog;
 
 require_once 'router.php';
-
+require_once 'controllers\HomeController.php';
+require_once 'models\DBManager.php';
+require __DIR__.'\vendor\autoload.php';
 session_start();
 
 if (!isset($_SESSION['name'])) {
@@ -11,8 +13,6 @@ if (!isset($_SESSION['name'])) {
     $_SESSION['role'] = '';
 }
 
-//require 'config.php';
-require __DIR__.'/vendor/autoload.php';
 $router = new Router();
 $router->start();
 

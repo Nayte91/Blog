@@ -7,19 +7,22 @@ class HomeController
     private $userController;
     private $articleController;
 
-    public function getOne($id)
-    {
-
-    }
-
-    public function viewHome()
+    public function viewHome($test)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
+
+        // Sample data
+        $foo = [
+            ['name' => 'Alice'],
+            ['name' => 'Bob'],
+            ['name' => 'Charlie'],
+            ['name' => 'David' ],
+            ['name' => 'Eve'],
+        ];
 
         // Instantiate our Twig
         $twig = new \Twig\Environment($loader);
 
-        echo $twig->render('index.html.twig', ['foo' => $foo] );
+        echo $twig->render('index.html.twig', ['foo' => $test] );
     }
-
 }

@@ -2,25 +2,31 @@
 namespace P5blog;
 
 use P5blog\controllers\HomeController;
+use P5blog\models\DBManager;
 
 class Router
 {
     private $homeController;
-    private $postController;
-    private $commentController;
-    private $userController;
+    private $manager;
+    //private $postController;
+    //private $commentController;
+    //private $userController;
 
     public function __construct()
     {
-        require_once 'controllers\HomeController.php';
         $this->homeController = new HomeController;
-        /*$this->postController = new PostController();
-        $this->commentController = new CommentController();
-        $this->userController = new UserController();*/
+        $this->manager = new DBManager;
+        //$this->postController = new PostController();
+        //$this->commentController = new CommentController();
+        //$this->userController = new UserController();
     }
 
     public function start()
     {
+        $result = $this->manager->newUser("Nayte","nayte91@gmail.com", "4ympgnyh", "1");
+        var_dump($result);
+        $this->homeController->viewHome($result);
+        /*
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
         if (!$getP) {
@@ -43,6 +49,6 @@ class Router
         }
 
         $this->homeController->displayError('Action interdite ou page inexistante !!!');
+        */
     }
-
 }
