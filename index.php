@@ -4,7 +4,7 @@ namespace P5blog;
 
 require_once 'router.php';
 require_once 'controllers\HomeController.php';
-require_once 'models\DBManager.php';
+//require_once 'models\DBManager.php';
 require __DIR__.'\vendor\autoload.php';
 session_start();
 

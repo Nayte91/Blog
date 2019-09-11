@@ -7,7 +7,7 @@ class HomeController
     private $userController;
     private $articleController;
 
-    public function viewHome($test)
+    public function viewHome()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
 
@@ -21,8 +21,8 @@ class HomeController
         ];
 
         // Instantiate our Twig
-        $twig = new \Twig\Environment($loader);
+        $twig = new \Twig\Environment($loader, ['cache' => false]);
 
-        echo $twig->render('index.html.twig', ['foo' => $test] );
+        echo $twig->render('index.html.twig', ['foo' => $foo] );
     }
 }

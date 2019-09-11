@@ -1,4 +1,5 @@
 <?php
+
 namespace P5blog;
 
 use P5blog\controllers\HomeController;
@@ -15,7 +16,7 @@ class Router
     public function __construct()
     {
         $this->homeController = new HomeController;
-        $this->manager = new DBManager;
+        //$this->manager = new DBManager;
         //$this->postController = new PostController();
         //$this->commentController = new CommentController();
         //$this->userController = new UserController();
@@ -23,17 +24,15 @@ class Router
 
     public function start()
     {
-        $result = $this->manager->newUser("Nayte","nayte91@gmail.com", "4ympgnyh", "1");
-        var_dump($result);
-        $this->homeController->viewHome($result);
-        /*
+        //$result = $this->manager->newUser("Nayte","nayte91@gmail.com", "4ympgnyh", "1");
+        
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
         if (!$getP) {
             $this->homeController->viewHome();
             return;
         }
-
+        /*
         $route = $this->getRouteWithoutRights($getP);
 
         if (!$route AND $this->homeController->checkRights($getP)) {
