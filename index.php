@@ -2,9 +2,13 @@
 
 namespace P5blog;
 
-require_once 'router.php';
-require_once 'controllers\HomeController.php';
-//require_once 'models\DBManager.php';
+require 'router.php';
+require 'controllers\HomeController.php';
+
+spl_autoload_register(function ($class){
+    require_once 'models/'.$class.'.php';
+});
+
 require __DIR__.'\vendor\autoload.php';
 session_start();
 

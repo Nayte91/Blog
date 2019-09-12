@@ -2,23 +2,23 @@
 
 namespace P5blog\models;
 
-class User
+class Post
 {
     use Hydrator;
 
     private $id;
-    private $admin;
-    private $email;
-    private $password;
-    private $name;
+    private $chapo;
+    private $title;
+    private $content;
+    private $creationDate;
 
     public function __construct($table)
     {
         $this->hydrate($table);
     }
 
-    public function getOne($id)
+    public function setId($id)
     {
-
+        $this->id = $id;
     }
 }

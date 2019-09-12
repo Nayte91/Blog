@@ -48,10 +48,50 @@ nav
 	justify-content: space-around;
 	align-items: center;
 }
+/*
+.navlink
+{
+	color: #FFFFFF;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: bold;
+	-moz-transition:color ease 0.5s;
+	-webkit-transition:color ease 0.5s;
+	-o-transition:color ease 0.5s;
+	transition:color ease 0.5s;
+}
+
+.navlink:hover
+{
+	color: #CBDB2A;
+	text-decoration: none;
+	-moz-transition:color ease 0.2s;
+	-webkit-transition:color ease 0.2s;
+	-o-transition:color ease 0.2s;
+	transition:color ease 0.2s;
+}
+*/
 
 nav>a, header>a
 {
-	color: white;
+	color: #FFFFFF;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: bold;
+	-moz-transition:color ease 0.5s;
+	-webkit-transition:color ease 0.5s;
+	-o-transition:color ease 0.5s;
+	transition:color ease 0.5s;
+}
+
+nav>a:hover, header>a:hover
+{
+	color: #CBDB2A;
+	text-decoration: none;
+	-moz-transition:color ease 0.2s;
+	-webkit-transition:color ease 0.2s;
+	-o-transition:color ease 0.2s;
+	transition:color ease 0.2s;
 }
 
 aside

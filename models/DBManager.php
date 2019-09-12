@@ -2,9 +2,10 @@
 
 namespace P5blog\models;
 
+
 class DBManager
 {
-    use DBconnector;
+    use DBConnector;
 
     private $db;
 
@@ -49,5 +50,19 @@ class DBManager
         $result = $user->execute(array($name , $email, $password, $admin));
 
         return $result;
+    }
+
+
+    public function getLatest(?int $number = 0, $table, $object): array
+    {
+        if $number == NULL{
+            $number = 0;
+        }
+
+        $result = $dbh->prepare("SELECT id, creation_date, title, chapo, content, author FROM ? LIMIT ? ORDER BY creation_date");
+        $result->execute($table, $number);
+        $tableau = $result->fetchAll();
+
+        $data[] = new $object($tableau);
     }
 }

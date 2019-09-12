@@ -3,7 +3,7 @@
 namespace P5blog;
 
 use P5blog\controllers\HomeController;
-use P5blog\models\DBManager;
+//use P5blog\models\DBManager;
 
 class Router
 {
@@ -15,7 +15,6 @@ class Router
 
     public function __construct()
     {
-        $this->homeController = new HomeController;
         //$this->manager = new DBManager;
         //$this->postController = new PostController();
         //$this->commentController = new CommentController();
@@ -29,9 +28,11 @@ class Router
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
         if (!$getP) {
+            $this->homeController = new HomeController;
             $this->homeController->viewHome();
             return;
         }
+
         /*
         $route = $this->getRouteWithoutRights($getP);
 
