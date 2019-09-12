@@ -5,4 +5,4 @@ TODO: Lire PSR-4 pour utiliser autoload
 TODO: Regarder le fonctionnement de spl_autoload
 TODO: Quel est l'éditeur WYSIWYG de Drupal ? CKEditor ?
 TODO: Interface entity pour lier aux controllers
-TODO: mettre le construct dans le trait Hydrator ?
+TODO: Héritage d'AbstractEntity vers Comment, Post et User

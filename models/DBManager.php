@@ -2,7 +2,6 @@
 
 namespace P5blog\models;
 
-
 class DBManager
 {
     use DBConnector;
@@ -52,17 +51,17 @@ class DBManager
         return $result;
     }
 
-
-    public function getLatest(?int $number = 0, $table, $object): array
+    public function getLatest($object, ?int $number = 0): array
     {
-        if $number == NULL{
+        if $number == NULL
             $number = 0;
-        }
 
-        $result = $dbh->prepare("SELECT id, creation_date, title, chapo, content, author FROM ? LIMIT ? ORDER BY creation_date");
-        $result->execute($table, $number);
-        $tableau = $result->fetchAll();
+        $statement = $this->db->prepare("SELECT id, creation_date, title, chapo, content, author FROM ? LIMIT ? ORDER BY creation_date");
+        $statement->execute($object, $number);
+        $tableau = $statement->fetchAll();
 
         $data[] = new $object($tableau);
+
+        return $data;
     }
 }

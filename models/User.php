@@ -2,23 +2,30 @@
 
 namespace P5blog\models;
 
-class User
+final class User extends AbstractEntity
 {
-    use Hydrator;
-
-    private $id;
-    private $admin;
+    private $name;
     private $email;
     private $password;
-    private $name;
+    private $admin;
 
-    public function __construct($table)
+    public function setName($name)
     {
-        $this->hydrate($table);
+        $this->name = $name;
     }
 
-    public function getOne($id)
+    public function setEmail($email)
     {
+        $this->email = $email;
+    }
 
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    public function setAdmin($admin)
+    {
+        $this->admin = $admin;
     }
 }

@@ -2,12 +2,8 @@
 
 namespace P5blog\controllers;
 
-use P5blog\models\Post;
-use P5blog\models\User;
-
-class HomeController
+final class HomeController extends AbstractController
 {
-    private $user;
     private $postlist;
 
     public function __construct()

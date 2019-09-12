@@ -1,7 +1,5 @@
 <?php
 
-namespace P5blog;
-
 use P5blog\controllers\HomeController;
 //use P5blog\models\DBManager;
 
@@ -24,7 +22,7 @@ class Router
     public function start()
     {
         //$result = $this->manager->newUser("Nayte","nayte91@gmail.com", "4ympgnyh", "1");
-        
+
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
         if (!$getP) {

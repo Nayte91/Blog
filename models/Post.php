@@ -2,23 +2,30 @@
 
 namespace P5blog\models;
 
-class Post
+final class Post extends AbstractEntity
 {
-    use Hydrator;
-
-    private $id;
-    private $chapo;
+    private $author;
     private $title;
+    private $heading;
     private $content;
-    private $creationDate;
 
-    public function __construct($table)
+    public function setAuthor($author)
     {
-        $this->hydrate($table);
+        $this->author = $author;
     }
 
-    public function setId($id)
+    public function setTitle($title)
     {
-        $this->id = $id;
+        $this->title = $title;
+    }
+
+    public function setHeading($heading)
+    {
+        $this->heading = $heading;
+    }
+
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
 }

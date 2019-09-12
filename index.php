@@ -1,13 +1,37 @@
 <?php
 
-namespace P5blog;
+spl_autoload_register(function ($class)
+{
+  // project-specific namespace prefix
+    $prefix = 'P5blog\\';
 
-require 'router.php';
-require 'controllers\HomeController.php';
+    // base directory for the namespace prefix
+    $base_dir = __DIR__;
 
-spl_autoload_register(function ($class){
-    require_once 'models/'.$class.'.php';
+    // does the class use the namespace prefix?
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        // no, move to the next registered autoloader
+        return;
+    }
+
+    // get the relative class name
+    $relative_class = substr($class, $len);
+
+    // replace the namespace prefix with the base directory, replace namespace
+    // separators with directory separators in the relative class name, append
+    // with .php
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+
+    // if the file exists, require it
+    if (file_exists($file)) {
+        require $file;
+    }
 });
+
+//require_once 'router.php';
+//require_once 'controllers\AbstractController.php';
+//require 'controllers\HomeController.php';
 
 require __DIR__.'\vendor\autoload.php';
 session_start();
