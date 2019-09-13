@@ -9,7 +9,7 @@ body
 	display: grid;
   min-height: 100%;
 	grid-template-columns: 100%;
-	grid-template-rows: 75px 1fr 60px;
+	grid-template-rows: 75px 1fr 75px;
 	grid-gap: 2px;
 	grid-template-areas:
 							"hd"
@@ -88,12 +88,12 @@ main
 
 footer
 {
-	background-color: lightgray;
 	grid-area: ft;
+	background-color: lightgray;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	font-size: 0.85rem;
+	font-size: 0.90rem;
 }
 
 @media (min-width: 500px)

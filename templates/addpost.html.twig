@@ -1,0 +1,17 @@
+{% extends "ephemere.html.twig" %}
+
+{% block title %}Nouveau billet - {% endblock %}
+{% block headscript %}<script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>{% endblock %}
+{% block main %}
+    <textarea name="content" id="editor">This is some sample content.</textarea>
+    <script>
+            ClassicEditor
+                    .create( document.querySelector( '#editor' ) )
+                    .then( editor => {
+                            console.log( editor );
+                    } )
+                    .catch( error => {
+                            console.error( error );
+                    } );
+    </script>
+{% endblock %}

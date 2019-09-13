@@ -1,5 +1,7 @@
 <?php
 
+namespace P5blog;
+
 use P5blog\controllers\HomeController;
 //use P5blog\models\DBManager;
 

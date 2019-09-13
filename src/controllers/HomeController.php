@@ -28,6 +28,6 @@ final class HomeController extends AbstractController
         // Instantiate our Twig
         $twig = new \Twig\Environment($loader, ['cache' => false]);
 
-        echo $twig->render('index.html.twig', ['foo' => $foo] );
+        echo $twig->render('home.html.twig', ['foo' => $foo] );
     }
 }

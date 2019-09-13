@@ -1,9 +1,5 @@
 <?php
 
-//require_once 'router.php';
-//require_once 'controllers\AbstractController.php';
-//require 'controllers\HomeController.php';
-
 require __DIR__.'\vendor\autoload.php';
 session_start();
 
