@@ -4,19 +4,11 @@ namespace P5blog\controllers;
 
 final class HomeController extends AbstractController
 {
-    private $postlist;
-
-    public function __construct()
-    {
-        //$this->user = new User;
-        //$this->postlist = new Post;
-    }
-
     public function viewHome()
     {
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $uc = new UserController();
 
-        // Sample data
+        // Test
         $foo = [
             ['name' => 'Alice'],
             ['name' => 'Bob'],
@@ -25,9 +17,25 @@ final class HomeController extends AbstractController
             ['name' => 'Eve'],
         ];
 
-        // Instantiate our Twig
-        $twig = new \Twig\Environment($loader, ['cache' => false]);
+        echo $this->twig->render('home.html.twig', ['foo' => $foo]);
 
-        echo $twig->render('home.html.twig', ['foo' => $foo] );
+        $uc->viewLogin();
+    }
+
+    public function viewContact()
+    {
+        $name = NULL;
+
+        if (!empty($_POST['name']))
+        {
+            setcookie('user', $_POST['name']);
+        }
+
+        if (!empty($_COOKIE['user']))
+        {
+            $name = $_COOKIE['user'];
+        }
+
+        echo $twig->render('contact.html.twig', ['name' => $name]);
     }
 }

@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block login %}
+    {% if name %}
+        <button type="button" data-toggle="modal" data-target="#logged">
+            <i class="fas fa-user fa-2x"></i>
+        </button>
+    {% else %}
+        <a href="/">
+            <i class="fas fa-sign-in-alt fa-2x"></i>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block modal %}
+    {% if name %}
+        <modal pour délogger></modal>
+    {% else %}
+        <modal pour logger></modal>
+    {% endif %}
+{% endblock %}
+
+{% block endscript %}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{% endblock %}

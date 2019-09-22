@@ -1,24 +1,23 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nayte
- * Date: 02/09/2019
- * Time: 19:23
- */
 
 namespace P5blog\controllers;
 
-
-class UserController
+class UserController extends AbstractController
 {
-    private $id;
-    private $admin;
-    private $email;
-    private $password;
-    private $name;
 
-    public function getOne($id)
+
+    public function viewLogin()
     {
+        $name = NULL;
 
+        if (!empty($_POST['name'])){
+            setcookie('user', $_POST['name']);
+        }
+
+        if (!empty($_COOKIE['user'])){
+            $name = $_COOKIE['user'];
+        }
+
+        echo $this->twig->render('login.html.twig', ['name' => $name]);
     }
 }

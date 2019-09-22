@@ -27,7 +27,7 @@ class Router
 
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
-        if (!$getP) {
+        if (!$getP){
             $this->homeController = new HomeController;
             $this->homeController->viewHome();
             return;
