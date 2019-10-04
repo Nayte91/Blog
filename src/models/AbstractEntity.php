@@ -4,8 +4,6 @@ namespace P5blog\models;
 
 abstract class AbstractEntity
 {
-    protected $id;
-    protected $creationDate;
 
     public function __construct($table)
     {

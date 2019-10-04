@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block login %}
+    {% if name %}
+        <a href="#logged" data-toggle="modal" data-target="#logged">
+            <i class="fas fa-user fa-2x"></i>
+        </a>
+    {% else %}
+        <a href="" data-toggle="modal" data-target="#login">
+            <i class="fas fa-sign-in-alt fa-2x"></i>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block modal %}
+    {% if name %}
+    <div class="modal fade" id="logged" tabindex="-1" role="dialog" aria-labelledby="logged" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bonjour {{ name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="\" method="post">
+                    <div class="modal-body">
+                      <p>Et bah c'est bien.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="form" name="form" value="logout">Déconnexion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Connectez-vous</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="\" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="username">Nom d'utilisateur</label>
+                                    <input class="form-control" name="name" type="text" />
+                                    <label for="password">Mot de passe</label>
+                                    <input class="form-control" name="password" type="password" id="password" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="form" name="form" value="login">Connexion</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block endscript %}
+{% endblock %}

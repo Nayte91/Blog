@@ -2,7 +2,7 @@
 
 namespace P5blog\models;
 
-final class UserManager
+final class UserManager extends DBManager
 {
     public function newOne($name , $email, $password, $admin)
     {
@@ -17,8 +17,11 @@ final class UserManager
 
     }
 
-    public function getOne($param)
+    public function getOne(User $user): User
     {
-
+       $query = $this->db->prepare('SELECT * FROM user WHERE name = ?');
+       $response = $query->execute($user->getName());
+       $user->hydrate($response);
+       return $user;
     }
 }

@@ -6,7 +6,7 @@ final class HomeController extends AbstractController
 {
     public function viewHome()
     {
-        $uc = new UserController();
+        //$uc = new UserController();
 
         // Test
         $foo = [
@@ -18,8 +18,9 @@ final class HomeController extends AbstractController
         ];
 
         echo $this->twig->render('home.html.twig', ['foo' => $foo]);
+        echo $this->twig->render('user.html.twig', ['name' => $_SESSION['name']]);
 
-        $uc->viewLogin();
+        //$uc->viewLogin();
     }
 
     public function viewContact()

@@ -15,6 +15,7 @@ final class User extends AbstractEntity
     {
         $this->id = $id;
     }
+
     public function setName($name)
     {
         $this->name = $name;
@@ -38,5 +39,10 @@ final class User extends AbstractEntity
     public function setCreationDate($CreationDate)
     {
         $this->creationDate = $creationDate;
+    }
+
+    public function getName(): string
+    {
+      return $this->name;
     }
 }

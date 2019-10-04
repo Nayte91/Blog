@@ -3,18 +3,22 @@
 namespace P5blog;
 
 use P5blog\controllers\HomeController;
+use P5blog\controllers\FormController;
 //use P5blog\models\DBManager;
 
 class Router
 {
     private $homeController;
-    private $manager;
+    private $userController;
     //private $postController;
     //private $commentController;
-    //private $userController;
+
 
     public function __construct()
     {
+        if (session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
         //$this->manager = new DBManager;
         //$this->postController = new PostController();
         //$this->commentController = new CommentController();
@@ -23,8 +27,17 @@ class Router
 
     public function start()
     {
-        //$result = $this->manager->newUser("Nayte","nayte91@gmail.com", "4ympgny", "1");
-
+        //Si le $_POST est rempli, lancer le user controller (partie login)
+        if ($_SERVER["REQUEST_METHOD"] == "POST"){
+            // Add form data processing code
+            $this->userController = new FormController;
+        }
+        /*
+        if (empty($_SESSION['name']) OR !isset($_SESSION['name'])){
+            $_SESSION['name'] = '';
+            $_SESSION['role'] = '';
+        }
+        */
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
         if (!$getP){
