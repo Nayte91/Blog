@@ -5,7 +5,7 @@ namespace P5blog\models;
 abstract class AbstractEntity
 {
 
-    public function __construct($table)
+    public function __construct(array $table)
     {
         $this->hydrate($table);
     }

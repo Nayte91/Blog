@@ -10,25 +10,29 @@ final class User extends AbstractEntity
     private $password;
     private $admin;
     private $creationDate;
+    private $logged;
 
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
 
-    public function setName($name)
+    public function setName($name): void
     {
-        $this->name = $name;
+        $len = mb_strlen($name);
+
+        if (($len > 3) || ($len < 16)){
+            $this->name = trim($name);
     }
 
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
 
-    public function setPassword($password)
+    public function setPassword($password): void
     {
-        $this->password = $password;
+        $this->password = trim($password);
     }
 
     public function setAdmin($admin)
@@ -44,5 +48,15 @@ final class User extends AbstractEntity
     public function getName(): string
     {
       return $this->name;
+    }
+
+    public function isNameValid(): bool
+    {
+        return $this->name ?
+    }
+
+    public function isPasswordValid(): bool
+    {
+        return $this->password ?
     }
 }

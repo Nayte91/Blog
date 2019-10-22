@@ -17,6 +17,8 @@ final class FormController extends AbstractController
             case "logout":
             $this->logout();
             break;
+            case "signin":
+            $this->signin();
         }
 
         //Vérifier le Session ?
@@ -25,19 +27,26 @@ final class FormController extends AbstractController
     public function login()
     {
         if (!empty($_POST['name']) AND isset($_POST['name'])){
-          $_SESSION['name'] = $_POST['name'];
-          //Créer un objet user avec name et $password
-          $user = new User($_POST);
-          $um = new UserManager($user);
-          
-          var_dump($user);
-          //Comparer en base si un tel user existe
-          //Si c'est le cas,
-            //ça devrait hydrater ce même objet user
-            //Remplir $_SESSION avec les infos de cet objet
-          //Sinon,
-            //Répondre fail au login
-        //Vérifer le POST de déco
+            //$_SESSION['name'] = $_POST['name'];
+            //Créer un objet user avec name et $password
+            $user = new User($_POST);
+
+            if ($user->isNameValid() && $user->isPasswordValid()){
+                $um = new UserManager();
+                $um->getOne($user);
+            }
+            else{
+                //login failed
+            }
+
+            var_dump($user);
+            //Comparer en base si un tel user existe
+            //Si c'est le cas,
+              //ça devrait hydrater ce même objet user
+              //Remplir $_SESSION avec les infos de cet objet
+            //Sinon,
+              //Répondre fail au login
+              //Vérifer le POST de déco
         }
 
 
@@ -57,5 +66,10 @@ final class FormController extends AbstractController
     public function logout()
     {
       $_SESSION['name'] = "";
+    }
+
+    public function signin()
+    {
+        $toto = new User(array($_POST['name'], $_POST['password'])
     }
 }
