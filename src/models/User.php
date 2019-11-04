@@ -23,6 +23,7 @@ final class User extends AbstractEntity
 
         if (($len > 3) || ($len < 16)){
             $this->name = trim($name);
+        }
     }
 
     public function setEmail($email): void
@@ -52,11 +53,21 @@ final class User extends AbstractEntity
 
     public function isNameValid(): bool
     {
-        return $this->name ?
+        return isset($this->name);
     }
 
     public function isPasswordValid(): bool
     {
-        return $this->password ?
+        return isset($this->password);
+    }
+
+    public function retrieve(): Self
+    {
+        $query = $this->db->prepare('SELECT * FROM user WHERE name = ?');
+        $query->execute(array($this->name));
+        $response = $query->fetchall();
+        $this->hydrate($response);
+
+        return $this;
     }
 }

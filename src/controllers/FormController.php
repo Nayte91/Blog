@@ -32,14 +32,15 @@ final class FormController extends AbstractController
             $user = new User($_POST);
 
             if ($user->isNameValid() && $user->isPasswordValid()){
-                $um = new UserManager();
-                $um->getOne($user);
+                $user = $user->retrieve();
             }
             else{
                 //login failed
             }
+        }
+        var_dump($user);
+    }
 
-            var_dump($user);
             //Comparer en base si un tel user existe
             //Si c'est le cas,
               //ça devrait hydrater ce même objet user
@@ -47,8 +48,6 @@ final class FormController extends AbstractController
             //Sinon,
               //Répondre fail au login
               //Vérifer le POST de déco
-        }
-
 
         //$name = $_POST['name'];
         /*
@@ -61,7 +60,6 @@ final class FormController extends AbstractController
         }
         */
         //echo $this->twig->render('user.html.twig', ['name' => $name]);
-    }
 
     public function logout()
     {
@@ -70,6 +68,6 @@ final class FormController extends AbstractController
 
     public function signin()
     {
-        $toto = new User(array($_POST['name'], $_POST['password'])
+        $toto = new User($_POST);
     }
 }

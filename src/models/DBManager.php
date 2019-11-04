@@ -2,17 +2,15 @@
 
 namespace P5blog\models;
 
-abstract class DBManager
+trait DBManager
 {
-    private $db;
-
-    public function __construct()
+    public function dbconnect()
     {
-        Require './config.php';
+        Require_once './config.php';
 
         try
         {
-            $this->db = new \PDO($dsn, $login,  $pass);
+            return new \PDO($dsn, $login,  $pass);
         }
 
         catch(Exception $e)

@@ -4,19 +4,23 @@ namespace P5blog\models;
 
 abstract class AbstractEntity
 {
+    use DBmanager;
+
+    protected $db;
 
     public function __construct(array $table)
     {
         $this->hydrate($table);
+        $this->db = $this->dbconnect();
     }
 
     public function hydrate(array $table): void
     {
-        foreach ($table as $column => $value)
-        {
+        foreach ($table as $column => $value){
             $method = "set".ucfirst($column);
-            if (method_exists($this, $method))
+            if (method_exists($this, $method)){
                 $this->$method($value);
+            }
         }
     }
 
