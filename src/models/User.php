@@ -9,7 +9,7 @@ final class User extends AbstractEntity
     private $email;
     private $password;
     private $admin;
-    private $creationDate;
+    private $creationdate;
     private $logged;
 
     public function setId($id): void
@@ -17,57 +17,72 @@ final class User extends AbstractEntity
         $this->id = $id;
     }
 
-    public function setName($name): void
+    public function setName(?string $name): void
     {
         $len = mb_strlen($name);
 
         if (($len > 3) || ($len < 16)){
-            $this->name = trim($name);
+            $this->name = ucfirst(trim($name));
+        } else {
+            throw new \Exception("Login invalide");
         }
     }
 
     public function setEmail($email): void
     {
-        $this->email = $email;
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $this->email = $email;
+        } else {
+            throw new \Exception("C'est une adresse mail ça ?");
+        }
     }
 
     public function setPassword($password): void
     {
-        $this->password = trim($password);
+        $this->password = password_hash(trim($password), PASSWORD_DEFAULT);
     }
 
-    public function setAdmin($admin)
+    public function setAdmin($admin): void
     {
-        $this->admin = $admin;
+        $this->admin = (int) $admin;
     }
 
-    public function setCreationDate($CreationDate)
+    public function setCreationdate($creationdate): void
     {
-        $this->creationDate = $creationDate;
+        $this->creationdate = $creationdate;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
-      return $this->name;
+        return $this->name;
     }
 
-    public function isNameValid(): bool
+    public function getAdmin(): ?int
     {
-        return isset($this->name);
+        return $this->admin;
     }
 
-    public function isPasswordValid(): bool
+    public function getEmail(): ?string
     {
-        return isset($this->password);
+        return $this->email;
     }
 
-    public function retrieve(): Self
+    public static function retrieveFromName(string $name): ?self
     {
-        $query = $this->db->prepare('SELECT * FROM user WHERE name = ?');
-        $query->execute(array($this->name));
-        $response = $query->fetchall();
-        $this->hydrate($response);
+        $db = self::dbconnect();
+        $query = $db->prepare('SELECT * FROM user WHERE name = ?');
+        $query->execute(array($name));
+        $response = $query->fetch(\PDO::FETCH_ASSOC);
 
-        return $this;
+        if ($response) {
+          return new self($response);
+        }
+
+        return null;
+    }
+
+    public function verifyPassword($password): bool
+    {
+        return password_verify($password, $this->password);
     }
 }

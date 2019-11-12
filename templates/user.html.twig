@@ -1,7 +1,5 @@
-{% extends "base.html.twig" %}
-
 {% block login %}
-    {% if name %}
+    {% if user.name %}
         <a href="#logged" data-toggle="modal" data-target="#logged">
             <i class="fas fa-user fa-2x"></i>
         </a>
@@ -13,7 +11,7 @@
 {% endblock %}
 
 {% block modal %}
-    {% if name %}
+    {% if user.name %}
     <div class="modal fade" id="logged" tabindex="-1" role="dialog" aria-labelledby="logged" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

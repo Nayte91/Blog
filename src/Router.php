@@ -9,7 +9,7 @@ use P5blog\controllers\FormController;
 class Router
 {
     private $homeController;
-    private $userController;
+    private $formController;
     //private $postController;
     //private $commentController;
 
@@ -26,17 +26,15 @@ class Router
 
     public function start()
     {
-        //Si le $_POST est rempli, lancer le user controller (partie login)
+        //Si le $_POST est rempli, lancer le form controller
         if ($_SERVER["REQUEST_METHOD"] == "POST"){
-            // Add form data processing code
-            $this->userController = new FormController;
+            try {
+                $this->formController = new FormController;
+            } catch (\Exception $e) {
+                echo 'raté : ', $e->getmessage();
+            }
         }
-        /*
-        if (empty($_SESSION['name']) OR !isset($_SESSION['name'])){
-            $_SESSION['name'] = '';
-            $_SESSION['role'] = '';
-        }
-        */
+
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
         if (!$getP){

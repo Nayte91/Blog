@@ -4,7 +4,7 @@ namespace P5blog\controllers;
 
 final class HomeController extends AbstractController
 {
-    public function viewHome()
+    public function viewHome(): void
     {
         //$uc = new UserController();
 
@@ -17,12 +17,12 @@ final class HomeController extends AbstractController
             ['name' => 'Eve'],
         ];
 
-        echo $this->twig->render('home.html.twig', ['foo' => $foo]);
-        echo $this->twig->render('user.html.twig', ['name' => $_SESSION['name']]);
+        echo $this->twig->render('home.html.twig', ['foo' => $foo, 'user' => $_SESSION]);
+        //echo $this->twig->render('user.html.twig', ['user' => (array)$user]);
 
         //$uc->viewLogin();
     }
-
+    /*
     public function viewContact()
     {
         $name = NULL;
@@ -39,4 +39,5 @@ final class HomeController extends AbstractController
 
         echo $twig->render('contact.html.twig', ['name' => $name]);
     }
+    */
 }

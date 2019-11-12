@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{% block title %}{% endblock %}Julien Robic</title>
+    <title>{% block title %}{% endblock %} {% if user.name %} - {% endif %}{{user.name}} </title>
     {% block headscript %}{% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -20,34 +20,13 @@
     <header>
         <a href="/">
             <h3 {% if 'current_route' %}id="active"{% endif %}>Julien Robic</h3>
-            <!-- <img class="svg" src='assets/img/logo.svg' /> -->
         </a>
 
         <nav>
             <a href="#"><h5>BLOG</h5></a>
         </nav>
-
+        {% include 'user.html.twig' %}
         {% block login %}{% endblock %}
-
-
-        <!-- old bootstrap
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li id="nav-events" class="nav-item">
-                    <a class="nav-link" href="/events"><h5>EVENTS</h5></a>
-                </li>
-                <li id="nav-actors" class="nav-item">
-                    <a class="nav-link" disabled"><h5>ACTORS</h5></a>
-                </li>
-                <li id="nav-players" class="nav-item">
-                    <a class="nav-link" disabled"><h5>PLAYERS</h5></a>
-                </li>
-                <li id="nav-rankings" class="nav-item">
-                    <a class="nav-link" href="/contact"><h5>Contact</h5></a>
-                </li>
-            </ul>
-        </div>
-        old bootstrap -->
     </header>
 
     <aside>

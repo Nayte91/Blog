@@ -20,50 +20,29 @@ final class FormController extends AbstractController
             case "signin":
             $this->signin();
         }
-
-        //Vérifier le Session ?
     }
 
-    public function login()
+    public function login(): void
     {
-        if (!empty($_POST['name']) AND isset($_POST['name'])){
-            //$_SESSION['name'] = $_POST['name'];
-            //Créer un objet user avec name et $password
-            $user = new User($_POST);
+        if (empty($_POST['name']) || !isset($_POST['name']) || empty($_POST['password']) || !isset($_POST['password']))
+            throw new \Exception("bien joué le formulaire vide");
 
-            if ($user->isNameValid() && $user->isPasswordValid()){
-                $user = $user->retrieve();
-            }
-            else{
-                //login failed
-            }
+        $user = User::retrieveFromName($_POST['name']);
+
+        if (!isset($user) || !$user->verifyPassword($_POST['password'])){
+            throw new \Exception("identifiants invalides");
         }
-        var_dump($user);
+
+        //Ca c'est le résultat
+        $_SESSION['name'] = $user->getName();
+        $_SESSION['admin'] = $user->getAdmin();
+        $_SESSION['email'] = $user->getEmail();
     }
-
-            //Comparer en base si un tel user existe
-            //Si c'est le cas,
-              //ça devrait hydrater ce même objet user
-              //Remplir $_SESSION avec les infos de cet objet
-            //Sinon,
-              //Répondre fail au login
-              //Vérifer le POST de déco
-
-        //$name = $_POST['name'];
-        /*
-        if (!empty($_POST['name'])){
-            setcookie('user', $_POST['name']);
-        }
-
-        if (!empty($_COOKIE['user'])){
-            $name = $_COOKIE['user'];
-        }
-        */
-        //echo $this->twig->render('user.html.twig', ['name' => $name]);
 
     public function logout()
     {
-      $_SESSION['name'] = "";
+      $_SESSION = [];
+      //session_destroy();
     }
 
     public function signin()

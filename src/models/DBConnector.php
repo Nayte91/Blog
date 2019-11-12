@@ -2,9 +2,9 @@
 
 namespace P5blog\models;
 
-trait DBManager
+trait DBConnector
 {
-    public function dbconnect()
+    public static function dbconnect()
     {
         Require_once './config.php';
 
