@@ -34,19 +34,26 @@ final class FormController extends AbstractController
         }
 
         //Ca c'est le résultat
+        /*
         $_SESSION['name'] = $user->getName();
         $_SESSION['admin'] = $user->getAdmin();
         $_SESSION['email'] = $user->getEmail();
+        */
+        $_SESSION = $user->getAll();
     }
 
     public function logout()
     {
       $_SESSION = [];
-      //session_destroy();
     }
 
     public function signin()
     {
-        $toto = new User($_POST);
+        if (array_search("", $_POST))
+          throw new \Exception("bien joué le formulaire vide");
+
+        $user = User::createOne($_POST);
+
+        $_SESSION = $user->getAll();
     }
 }

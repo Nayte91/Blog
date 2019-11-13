@@ -4,7 +4,7 @@ namespace P5blog\controllers;
 
 final class HomeController extends AbstractController
 {
-    public function viewHome(): void
+    public function viewHome(?string $error): void
     {
         //$uc = new UserController();
 
@@ -17,7 +17,7 @@ final class HomeController extends AbstractController
             ['name' => 'Eve'],
         ];
 
-        echo $this->twig->render('home.html.twig', ['foo' => $foo, 'user' => $_SESSION]);
+        echo $this->twig->render('home.html.twig', ['foo' => $foo, 'user' => $_SESSION, 'error' => $error]);
         //echo $this->twig->render('user.html.twig', ['user' => (array)$user]);
 
         //$uc->viewLogin();

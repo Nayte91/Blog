@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{% block title %}{% endblock %} {% if user.name %} - {% endif %}{{user.name}} </title>
+    <title>{% block title %}{% endblock %} {% if user.name %} - {{user.name}}{% endif %}</title>
     {% block headscript %}{% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -30,7 +30,11 @@
     </header>
 
     <aside>
-        {% block aside %}{% endblock %}
+        {% if error %}
+        <div class="alert alert-danger row-full" role="alert">
+            {{error}}
+        </div>
+        {% endif %}
     </aside>
 
     <main role="main" class="container main">

@@ -12,6 +12,55 @@ final class User extends AbstractEntity
     private $creationdate;
     private $logged;
 
+    public static function retrieveFromName(string $name): ?self
+    {
+        $db = self::dbconnect();
+        $query = $db->prepare('SELECT * FROM user WHERE name = :name');
+        $query->bindValue(':name', $name, \PDO::PARAM_STR);
+        $query->execute();
+        $response = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if ($response) {
+          return new self($response);
+        }
+
+        return null;
+    }
+
+    public static function retrieveAll(): array
+    {
+      $db = self::dbconnect();
+      $query = $db->prepare('SELECT * FROM user');
+      $query->execute();
+      $response = $query->fetchall(\PDO::FETCH_CLASS);
+
+      return $response;
+    }
+
+    public static function createOne(array $data): ?self
+    {
+        $db = self::dbconnect();
+        $query = $db->prepare('SELECT * FROM user WHERE name = :name');
+        $query->bindValue(':name', $data['name'], \PDO::PARAM_STR);
+        $query->execute();
+        $nameresponse = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if ($nameresponse) {
+          throw new \Exception("Ce nom existe déjà");
+        }
+
+        $query = $db->prepare('SELECT * FROM user WHERE email = :email');
+        $query->bindValue(':email', $data['email'], \PDO::PARAM_STR);
+        $query->execute();
+        $emailresponse = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if ($emailresponse) {
+          throw new \Exception("Cette adresse existe déjà");
+        }
+
+        throw new \Exception("Petit canaillou");
+    }
+
     public function setId($id): void
     {
         $this->id = $id;
@@ -52,6 +101,11 @@ final class User extends AbstractEntity
         $this->creationdate = $creationdate;
     }
 
+    public function getAll(): ?array
+    {
+        return get_object_vars($this);
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -65,20 +119,6 @@ final class User extends AbstractEntity
     public function getEmail(): ?string
     {
         return $this->email;
-    }
-
-    public static function retrieveFromName(string $name): ?self
-    {
-        $db = self::dbconnect();
-        $query = $db->prepare('SELECT * FROM user WHERE name = ?');
-        $query->execute(array($name));
-        $response = $query->fetch(\PDO::FETCH_ASSOC);
-
-        if ($response) {
-          return new self($response);
-        }
-
-        return null;
     }
 
     public function verifyPassword($password): bool

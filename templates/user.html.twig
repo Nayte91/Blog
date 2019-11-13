@@ -16,16 +16,24 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Bonjour {{ name }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Bonjour {{ user.name }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form action="\" method="post">
                     <div class="modal-body">
-                      <p>Et bah c'est bien.</p>
+                      <p>Compte #{{ user.id }}</p>
+                      <p>Date de création : {{ user.creationdate }}</p>
+                      <p>Adresse utilisée : {{ user.email }}</p>
+                      {%if user.admin %}
+                      <p class="font-weight-bold text-success">Vous êtes administrateur.</p>
+                      {% endif %}
                     </div>
                     <div class="modal-footer">
+                    {%if user.admin %}
+                      <a class="btn btn-success" href="{{ app.request.getBaseURL() }}">Administration</a>
+                    {% endif %}
                         <button type="submit" class="btn btn-primary" id="form" name="form" value="logout">Déconnexion</button>
                     </div>
                 </form>
@@ -37,7 +45,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Connectez-vous</h5>
+                        <h5 class="modal-title">Connectez vous</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -53,7 +61,38 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" id="form" name="form" value="login">Connexion</button>
+                                <button class="btn btn-info" data-dismiss="modal" data-toggle="modal" data-target="#signin">Inscription</button>
+                                <button type="submit" class="btn btn-success" id="form" name="form" value="login">Valider</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="signin" tabindex="-1" role="dialog" aria-labelledby="signin" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Inscrivez vous</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="\" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="username">Nom d'utilisateur</label>
+                                    <input class="form-control" name="name" type="text" />
+                                    <label for="password">Mot de passe</label>
+                                    <input class="form-control" name="password" type="password" id="password" />
+                                    <label for="username">Adresse email</label>
+                                    <input class="form-control" name="email" type="email" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-info" data-dismiss="modal" data-toggle="modal" data-target="#login">Connexion</button>
+                                <button type="submit" class="btn btn-success" id="form" name="form" value="signin">Valider</button>
                             </div>
                         </form>
                     </div>

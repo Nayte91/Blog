@@ -4,9 +4,9 @@ namespace P5blog\models;
 
 trait DBConnector
 {
-    public static function dbconnect()
+    protected static function dbconnect(): \PDO
     {
-        Require_once './config.php';
+        Require './config.php';
 
         try
         {
