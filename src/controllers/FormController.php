@@ -12,13 +12,19 @@ final class FormController extends AbstractController
         //Vérifier le POST de login
         switch ($_POST['form']){
             case "login":
-            $this->login();
-            break;
+                $this->login();
+                break;
             case "logout":
-            $this->logout();
-            break;
+                $this->logout();
+                break;
             case "signin":
-            $this->signin();
+                $this->signin();
+                break;
+            case "signout":
+                $this->signout();
+                break;
+            default:
+                break;
         }
     }
 
@@ -27,33 +33,47 @@ final class FormController extends AbstractController
         if (empty($_POST['name']) || !isset($_POST['name']) || empty($_POST['password']) || !isset($_POST['password']))
             throw new \Exception("bien joué le formulaire vide");
 
-        $user = User::retrieveFromName($_POST['name']);
+        $user = User::retrieveFromName($_POST);
 
         if (!isset($user) || !$user->verifyPassword($_POST['password'])){
             throw new \Exception("identifiants invalides");
         }
 
         //Ca c'est le résultat
-        /*
-        $_SESSION['name'] = $user->getName();
-        $_SESSION['admin'] = $user->getAdmin();
-        $_SESSION['email'] = $user->getEmail();
-        */
         $_SESSION = $user->getAll();
+
+        $this->message = "Connexion réussie";
     }
 
-    public function logout()
+    public function logout(): void
     {
-      $_SESSION = [];
+        $_SESSION = [];
+        $this->message = "Vous êtes déconnecté";
     }
 
-    public function signin()
+    public function signin(): void
     {
         if (array_search("", $_POST))
-          throw new \Exception("bien joué le formulaire vide");
+            throw new \Exception("bien joué le formulaire vide");
 
-        $user = User::createOne($_POST);
+        if(User::createOne($_POST)){
+            $this->message = "Compte créé, connectez-vous";
+        } else {
+            throw new \Exception("Création ratée");
+        }
+    }
 
-        $_SESSION = $user->getAll();
+    public function signout(): void
+    {
+        if (!array_key_exists("id", $_SESSION) || !$_SESSION['id']){
+            throw new \Exception("Petit coquinou");
+        }
+
+        if(User::deleteFromId($_SESSION['id'])){
+            $_SESSION = [];
+            $this->message = "Compte détruit";
+        } else {
+            throw new \Exception("Destruction ratée ?");
+        }
     }
 }

@@ -23,18 +23,19 @@
                 </div>
                 <form action="\" method="post">
                     <div class="modal-body">
-                      <p>Compte #{{ user.id }}</p>
-                      <p>Date de création : {{ user.creationdate }}</p>
-                      <p>Adresse utilisée : {{ user.email }}</p>
-                      {%if user.admin %}
-                      <p class="font-weight-bold text-success">Vous êtes administrateur.</p>
-                      {% endif %}
+                        <p>Compte #{{ user.id }}</p>
+                        <p>Date de création : {{ user.creationdate }}</p>
+                        <p>Adresse utilisée : {{ user.email }}</p>
+                        {%if user.admin %}
+                        <p class="font-weight-bold text-success">Vous êtes administrateur.</p>
+                        {% endif %}
                     </div>
                     <div class="modal-footer">
                     {%if user.admin %}
-                      <a class="btn btn-success" href="{{ app.request.getBaseURL() }}">Administration</a>
+                        <a class="btn btn-success" href="{{ app.request.getBaseURL() }}">Administration</a>
                     {% endif %}
-                        <button type="submit" class="btn btn-primary" id="form" name="form" value="logout">Déconnexion</button>
+                        <button type=submit class="btn btn-danger" id="form" name="form" value="signout">Destruction</button>
+                        <button type=submit class="btn btn-primary" id="form" name="form" value="logout">Déconnexion</button>
                     </div>
                 </form>
             </div>
@@ -61,8 +62,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-info" data-dismiss="modal" data-toggle="modal" data-target="#signin">Inscription</button>
-                                <button type="submit" class="btn btn-success" id="form" name="form" value="login">Valider</button>
+                                <button type=button class="btn btn-info" data-dismiss="modal" data-toggle="modal" data-target="#signin">Inscription</button>
+                                <button type=submit class="btn btn-success" id="form" name="form" value="login">Valider</button>
                             </div>
                         </form>
                     </div>
@@ -91,8 +92,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-info" data-dismiss="modal" data-toggle="modal" data-target="#login">Connexion</button>
-                                <button type="submit" class="btn btn-success" id="form" name="form" value="signin">Valider</button>
+                                <button type=button class="btn btn-info" data-dismiss="modal" data-toggle="modal" data-target="#login">Connexion</button>
+                                <button type=submit class="btn btn-success" id="form" name="form" value="signin">Valider</button>
                             </div>
                         </form>
                     </div>

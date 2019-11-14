@@ -26,14 +26,17 @@ class Router
 
     public function start()
     {
-        $errormessage = "";
+        $message[] = "";
         //Si le $_POST est rempli, lancer le form controller
         if ($_SERVER["REQUEST_METHOD"] == "POST"){
             try {
                 $this->formController = new FormController;
+                $message['content'] = $this->formController->getMessage();
+                $message['type'] = "success";
             } catch (\Exception $e) {
                 //echo 'raté : ', $e->getmessage();
-                $errormessage = $e->getmessage();
+                $message['content'] = $e->getmessage();
+                $message['type'] = "error";
             }
         }
 
@@ -41,7 +44,8 @@ class Router
 
         if (!$getP){
             $this->homeController = new HomeController;
-            $this->homeController->viewHome($errormessage);
+            $this->homeController->viewHome($message);
+
             return;
         }
 

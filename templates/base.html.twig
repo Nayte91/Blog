@@ -30,9 +30,13 @@
     </header>
 
     <aside>
-        {% if error %}
-        <div class="alert alert-danger row-full" role="alert">
-            {{error}}
+        {% if message %}
+            {% if message.type == 'error' %}
+            <div class="alert alert-danger row-full" role="alert">
+            {% elseif message.type == 'success' %}
+            <div class="alert alert-success row-full" role="alert">
+            {% endif %}
+            {{ message.content }}
         </div>
         {% endif %}
     </aside>

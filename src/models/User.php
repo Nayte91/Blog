@@ -12,58 +12,93 @@ final class User extends AbstractEntity
     private $creationdate;
     private $logged;
 
-    public static function retrieveFromName(string $name): ?self
+    public static function retrieveFromName(array $data): ?self
     {
+        $user = new self($data);
         $db = self::dbconnect();
         $query = $db->prepare('SELECT * FROM user WHERE name = :name');
-        $query->bindValue(':name', $name, \PDO::PARAM_STR);
+        $query->bindValue(':name', $user->name, \PDO::PARAM_STR);
         $query->execute();
         $response = $query->fetch(\PDO::FETCH_ASSOC);
 
         if ($response) {
-          return new self($response);
+            $user->id = $response['id'];
+            $user->name = $response['name'];
+            $user->email = $response['email'];
+            $user->password = $response['password'];
+            $user->creationdate = $response['creationdate'];
+            $user->admin = $response['admin'];
+            return $user;
+        } else {
+            return null;
         }
+    }
 
-        return null;
+    public static function retrieveFromEmail(array $data): ?self
+    {
+        $user = new self($data);
+        $db = self::dbconnect();
+        $query = $db->prepare('SELECT * FROM user WHERE email = :email');
+        $query->bindValue(':email', $user->email, \PDO::PARAM_STR);
+        $query->execute();
+        $response = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if ($response) {
+            $user->id = $response['id'];
+            $user->name = $response['name'];
+            $user->email = $response['email'];
+            $user->password = $response['password'];
+            $user->creationdate = $response['creationdate'];
+            $user->admin = $response['admin'];
+            return $user;
+        } else {
+            return null;
+        }
     }
 
     public static function retrieveAll(): array
     {
-      $db = self::dbconnect();
-      $query = $db->prepare('SELECT * FROM user');
-      $query->execute();
-      $response = $query->fetchall(\PDO::FETCH_CLASS);
+        $db = self::dbconnect();
+        $query = $db->prepare('SELECT * FROM user');
+        $query->execute();
+        $response = $query->fetchall(\PDO::FETCH_CLASS);
 
-      return $response;
+        return $response;
     }
 
-    public static function createOne(array $data): ?self
+    public static function createOne(array $data): bool
+    {
+        $user = new self($data);
+
+        if (self::retrieveFromName($data)) {
+            throw new \Exception("Ce nom existe déjà");
+        }
+
+        if (self::retrieveFromEmail($data)) {
+            throw new \Exception("Cette adresse existe déjà");
+        }
+
+        $db = self::dbconnect();
+        $query = $db->prepare('INSERT INTO user (name, password, email, creationdate, admin) VALUES (:name, :password, :email, NOW(), 0)');
+        $query->bindValue(':name', $user->name, \PDO::PARAM_STR);
+        $query->bindValue(':password', $user->password, \PDO::PARAM_STR);
+        $query->bindValue(':email', $user->email, \PDO::PARAM_STR);
+
+        return $query->execute();
+    }
+
+    public static function deleteFromId(int $id): ?bool
     {
         $db = self::dbconnect();
-        $query = $db->prepare('SELECT * FROM user WHERE name = :name');
-        $query->bindValue(':name', $data['name'], \PDO::PARAM_STR);
-        $query->execute();
-        $nameresponse = $query->fetch(\PDO::FETCH_ASSOC);
+        $query = $db->prepare('DELETE FROM user WHERE id = :id');
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
 
-        if ($nameresponse) {
-          throw new \Exception("Ce nom existe déjà");
-        }
-
-        $query = $db->prepare('SELECT * FROM user WHERE email = :email');
-        $query->bindValue(':email', $data['email'], \PDO::PARAM_STR);
-        $query->execute();
-        $emailresponse = $query->fetch(\PDO::FETCH_ASSOC);
-
-        if ($emailresponse) {
-          throw new \Exception("Cette adresse existe déjà");
-        }
-
-        throw new \Exception("Petit canaillou");
+        return $query->execute();
     }
 
     public function setId($id): void
     {
-        $this->id = $id;
+        $this->id = (int)$id;
     }
 
     public function setName(?string $name): void
