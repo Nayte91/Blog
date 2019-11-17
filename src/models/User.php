@@ -10,7 +10,6 @@ final class User extends AbstractEntity
     private $password;
     private $admin;
     private $creationdate;
-    private $logged;
 
     public static function retrieveFromName(array $data): ?self
     {
@@ -50,6 +49,7 @@ final class User extends AbstractEntity
             $user->password = $response['password'];
             $user->creationdate = $response['creationdate'];
             $user->admin = $response['admin'];
+
             return $user;
         } else {
             return null;

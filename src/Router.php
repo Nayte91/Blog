@@ -30,7 +30,7 @@ class Router
         //Si le $_POST est rempli, lancer le form controller
         if ($_SERVER["REQUEST_METHOD"] == "POST"){
             try {
-                $this->formController = new FormController;
+                $this->formController = new FormController($_POST);
                 $message['content'] = $this->formController->getMessage();
                 $message['type'] = "success";
             } catch (\Exception $e) {

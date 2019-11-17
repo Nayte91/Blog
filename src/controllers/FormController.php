@@ -7,18 +7,18 @@ use P5blog\models\UserManager;
 
 final class FormController extends AbstractController
 {
-    public function __construct()
+    public function __construct(array $form)
     {
         //Vérifier le POST de login
-        switch ($_POST['form']){
+        switch ($form['form']){
             case "login":
-                $this->login();
+                $this->login($form);
                 break;
             case "logout":
                 $this->logout();
                 break;
             case "signin":
-                $this->signin();
+                $this->signin($form);
                 break;
             case "signout":
                 $this->signout();
@@ -28,14 +28,14 @@ final class FormController extends AbstractController
         }
     }
 
-    public function login(): void
+    public function login(array $form): void
     {
-        if (empty($_POST['name']) || !isset($_POST['name']) || empty($_POST['password']) || !isset($_POST['password']))
+        if (empty($form['name']) || !isset($form['name']) || empty($form['password']) || !isset($form['password']))
             throw new \Exception("bien joué le formulaire vide");
 
-        $user = User::retrieveFromName($_POST);
+        $user = User::retrieveFromName($form);
 
-        if (!isset($user) || !$user->verifyPassword($_POST['password'])){
+        if (!isset($user) || !$user->verifyPassword($form['password'])){
             throw new \Exception("identifiants invalides");
         }
 
@@ -51,12 +51,12 @@ final class FormController extends AbstractController
         $this->message = "Vous êtes déconnecté";
     }
 
-    public function signin(): void
+    public function signin(array $form): void
     {
-        if (array_search("", $_POST))
+        if (array_search("", $form))
             throw new \Exception("bien joué le formulaire vide");
 
-        if(User::createOne($_POST)){
+        if(User::createOne($form)){
             $this->message = "Compte créé, connectez-vous";
         } else {
             throw new \Exception("Création ratée");
