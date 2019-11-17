@@ -4,12 +4,15 @@ namespace P5blog\models;
 
 trait DBConnector
 {
-    public function connection()
+    protected static function dbconnect(): \PDO
     {
+        Require './config.php';
+
         try
         {
-            return new \PDO('mysql:host=localhost;dbname=p5blog;charset=utf8', 'root', '');
+            return new \PDO($dsn, $login,  $pass);
         }
+
         catch(Exception $e)
         {
             die('Erreur : '.$e->getMessage());

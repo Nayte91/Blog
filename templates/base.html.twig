@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{% block title %}{% endblock %}Julien Robic</title>
+    <title>{% block title %}{% endblock %} {% if user.name %} - {{user.name}}{% endif %}</title>
     {% block headscript %}{% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css" />
     <script src="https://kit.fontawesome.com/4ef10fbce3.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <!--
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="assets/img/anagraph32.png" sizes="32x32">
 </head>
 
@@ -21,38 +20,25 @@
     <header>
         <a href="/">
             <h3 {% if 'current_route' %}id="active"{% endif %}>Julien Robic</h3>
-            <!-- <img class="svg" src='assets/img/logo.svg' /> -->
         </a>
 
         <nav>
             <a href="#"><h5>BLOG</h5></a>
         </nav>
-
+        {% include 'user.html.twig' %}
         {% block login %}{% endblock %}
-
-
-        <!-- old bootstrap
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li id="nav-events" class="nav-item">
-                    <a class="nav-link" href="/events"><h5>EVENTS</h5></a>
-                </li>
-                <li id="nav-actors" class="nav-item">
-                    <a class="nav-link" disabled"><h5>ACTORS</h5></a>
-                </li>
-                <li id="nav-players" class="nav-item">
-                    <a class="nav-link" disabled"><h5>PLAYERS</h5></a>
-                </li>
-                <li id="nav-rankings" class="nav-item">
-                    <a class="nav-link" href="/contact"><h5>Contact</h5></a>
-                </li>
-            </ul>
-        </div>
-        old bootstrap -->
     </header>
 
     <aside>
-        {% block aside %}{% endblock %}
+        {% if message %}
+            {% if message.type == 'error' %}
+            <div class="alert alert-danger row-full" role="alert">
+            {% elseif message.type == 'success' %}
+            <div class="alert alert-success row-full" role="alert">
+            {% endif %}
+            {{ message.content }}
+        </div>
+        {% endif %}
     </aside>
 
     <main role="main" class="container main">

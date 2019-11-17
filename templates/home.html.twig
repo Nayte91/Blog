@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Home - {% endblock %}
+{% block title %}Home {% endblock %}
 
 {% block main %}
     <article>
@@ -20,19 +20,11 @@
     </article>
 {% endblock %}
 
-{% block aside %}
+{% block section %}
     <h5>Les derniers billets :</h5>
     <ul>
         {% for post in posts %}
             <li>{{ post.title }}</li>
         {% endfor %}
-    </ul>
-{% endblock %}
-
-{% block section %}
-    <h5>Emplacement à droite</h5>
-    <ul>
-        <li>Pour je sais pas trop quoi</li>
-        <li>Mais on va trouver</li>
     </ul>
 {% endblock %}
