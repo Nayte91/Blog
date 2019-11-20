@@ -56,7 +56,7 @@ final class User extends AbstractEntity
         }
     }
 
-    public static function retrieveAll(): array
+    public static function retrieveAll(): ?array
     {
         $db = self::dbconnect();
         $query = $db->prepare('SELECT * FROM user');
