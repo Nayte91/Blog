@@ -23,6 +23,8 @@ final class FormController extends AbstractController
             case "signout":
                 $this->signout();
                 break;
+            case "blogpost":
+                $this->newPost();
             default:
                 break;
         }

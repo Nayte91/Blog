@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95bce8f0-8a93-4f05-99f3-a79b50e6d419" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/FormController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/FormController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Post.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,12 +67,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
       <path value="$PROJECT_DIR$/vendor/twig/twig" />
     </include_path>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="712" />
-    <option name="y" value="9" />
-    <option name="width" value="1204" />
-    <option name="height" value="568" />
   </component>
   <component name="ProjectId" id="1TkDZTJKde43XZvWTW2bAKZgCoH" />
   <component name="PropertiesComponent">
@@ -138,7 +134,11 @@
       <workItem from="1568844262282" duration="2411000" />
       <workItem from="1569086663265" duration="3606000" />
       <workItem from="1569141525907" duration="11076000" />
-      <workItem from="1573995261052" duration="5812000" />
+      <workItem from="1573995261052" duration="9578000" />
+      <workItem from="1574027469332" duration="755000" />
+      <workItem from="1574104727637" duration="6278000" />
+      <workItem from="1574272852278" duration="3673000" />
+      <workItem from="1574612558106" duration="5376000" />
     </task>
     <task id="LOCAL-00001" summary="Twig installed">
       <created>1566563250617</created>
@@ -186,7 +186,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

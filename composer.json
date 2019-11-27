@@ -4,6 +4,6 @@
       "psr-4": { "P5blog\\": "src/" }
   },
   "require": {
-    "twig/twig": "^2.11"
+    "twig/twig": "3.*"
   }
 }

@@ -22,22 +22,14 @@ final class Post extends AbstractEntity
     }
 
     public static function retrieveFromAuthor(int $author): ?array
+    {
 
+    }
     public static function retrieveLatest(?int $number = 0): ?array
     {
         $db = self::dbconnect();
-        $query = $db->prepare("SELECT id, creation_date, title, chapo, content, author FROM post LIMIT ? ORDER BY creation_date");
+        $query = $db->prepare("SELECT * FROM post LIMIT ? ORDER BY creation_date");
         $query->execute($number);
-        $response = $query->fetchall(\PDO::FETCH_CLASS);
-
-        return $response;
-    }
-
-    public static function retrieveAll(): ?array
-    {
-        $db = self::dbconnect();
-        $query = $db->prepare('SELECT * FROM post');
-        $query->execute();
         $response = $query->fetchall(\PDO::FETCH_CLASS);
 
         return $response;

@@ -96,7 +96,7 @@ final class User extends AbstractEntity
         return $query->execute();
     }
 
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = (int)$id;
     }
@@ -126,7 +126,7 @@ final class User extends AbstractEntity
         $this->password = password_hash(trim($password), PASSWORD_DEFAULT);
     }
 
-    public function setAdmin($admin): void
+    public function setAdmin(int $admin): void
     {
         $this->admin = (int) $admin;
     }
