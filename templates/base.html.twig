@@ -18,12 +18,12 @@
 
 <body>
     <header>
-        <a href="/">
+        <a href="\">
             <h3 {% if 'current_route' %}id="active"{% endif %}>Julien Robic</h3>
         </a>
 
         <nav>
-            <a href="#"><h5>BLOG</h5></a>
+            <a href="{{ app.request.getBaseURL() }}\blog"><h5>BLOG</h5></a>
         </nav>
         {% include 'user.html.twig' %}
         {% block login %}{% endblock %}
@@ -32,9 +32,9 @@
     <aside>
         {% if message %}
             {% if message.type == 'error' %}
-            <div class="alert alert-danger row-full" role="alert">
+                <div class="alert alert-danger row-full" role="alert">
             {% elseif message.type == 'success' %}
-            <div class="alert alert-success row-full" role="alert">
+                <div class="alert alert-success row-full" role="alert">
             {% endif %}
             {{ message.content }}
         </div>

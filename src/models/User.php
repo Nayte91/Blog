@@ -14,6 +14,7 @@ final class User extends AbstractEntity
     public static function retrieveFromName(array $data): ?self
     {
         $user = new self($data);
+        //$user->securePassword();
         $db = self::dbconnect();
         $query = $db->prepare('SELECT * FROM user WHERE name = :name');
         $query->bindValue(':name', $user->name, \PDO::PARAM_STR);
@@ -21,12 +22,8 @@ final class User extends AbstractEntity
         $response = $query->fetch(\PDO::FETCH_ASSOC);
 
         if ($response) {
-            $user->id = $response['id'];
-            $user->name = $response['name'];
-            $user->email = $response['email'];
-            $user->password = $response['password'];
-            $user->creationdate = $response['creationdate'];
-            $user->admin = $response['admin'];
+            $user->hydrate($response);
+
             return $user;
         } else {
             return null;
@@ -121,9 +118,14 @@ final class User extends AbstractEntity
         }
     }
 
-    public function setPassword($password): void
+    public function setPassword(string $password): void
     {
-        $this->password = password_hash(trim($password), PASSWORD_DEFAULT);
+        $this->password = $password;
+    }
+
+    public function securePassword(): void
+    {
+        $this->password = password_hash(trim($this->password), PASSWORD_DEFAULT);
     }
 
     public function setAdmin(int $admin): void

@@ -25,12 +25,18 @@ final class Post extends AbstractEntity
     {
 
     }
+
     public static function retrieveLatest(?int $number = 0): ?array
     {
         $db = self::dbconnect();
-        $query = $db->prepare("SELECT * FROM post LIMIT ? ORDER BY creation_date");
-        $query->execute($number);
-        $response = $query->fetchall(\PDO::FETCH_CLASS);
+        if ($number == 0){
+            $query = $db->prepare("SELECT post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.chapo, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC");
+        } else {
+            $query = $db->prepare("SELECT post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.chapo, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC LIMIT :number");
+            $query->bindParam(':number', $number, \PDO::PARAM_INT);
+        }
+        $query->execute();
+        $response = $query->fetchAll(\PDO::FETCH_ASSOC);
 
         return $response;
     }
@@ -51,11 +57,11 @@ final class Post extends AbstractEntity
 
     public static function deleteFromId(int $id): ?bool
     {
-          $db = self::dbconnect();
-          $query = $db->prepare('DELETE FROM post WHERE id = :id');
-          $query->bindValue(':id', $id, \PDO::PARAM_INT);
+        $db = self::dbconnect();
+        $query = $db->prepare('DELETE FROM post WHERE id = :id');
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
 
-          return $query->execute();
+        return $query->execute();
     }
 
     public function setAuthor($author)

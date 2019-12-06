@@ -3,11 +3,10 @@
 namespace P5blog\controllers;
 
 use P5blog\models\User;
-use P5blog\models\UserManager;
 
 final class FormController extends AbstractController
 {
-    public function __construct(array $form)
+    public function dispatch(array $form): void
     {
         //Vérifier le POST de login
         switch ($form['form']){

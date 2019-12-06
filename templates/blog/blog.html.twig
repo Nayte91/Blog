@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Blog {% endblock %}
+
+{% block main %}
+    <article>
+        {% for post in posts %}
+            <h2>{{ post.title|e }}</h2>
+            <strong>By {{ post.name }} on {{ post.date }}</strong>
+            <p>{{ post.chapo|e }}</p>
+            <a href="#" class="btn"><i>Lire ce billet...</i></a>
+        {% endfor %}
+    </article>
+{% endblock %}
+
+{% block section %}
+    {%if user.admin %}
+        <h5>Ecrire un nouveau billet !</h5>
+        <a href="\addpost" class="btn"><i class="fas fa-4x fa-plus-square text-success" ></i></i></a>
+    {% endif %}
+{% endblock %}

@@ -4,12 +4,13 @@ namespace P5blog;
 
 use P5blog\controllers\HomeController;
 use P5blog\controllers\FormController;
-//use P5blog\models\DBManager;
+use P5blog\controllers\BlogController;
 
 class Router
 {
     private $homeController;
     private $formController;
+    private $blogController;
     //private $postController;
     //private $commentController;
 
@@ -18,19 +19,23 @@ class Router
         if (session_status() === PHP_SESSION_NONE){
             session_start();
         }
-        //$this->manager = new DBManager;
+        $this->homeController = new HomeController;
+        $this->formController = new FormController;
+        $this->blogController = new BlogController;
         //$this->postController = new PostController();
-        //$this->commentController = new CommentController();
-        //$this->userController = new UserController();
     }
 
     public function start()
     {
+        $path = ltrim($_SERVER['REQUEST_URI'], '/');
+        $post = $_POST;
+
         $message[] = "";
+
         //Si le $_POST est rempli, lancer le form controller
         if ($_SERVER["REQUEST_METHOD"] == "POST"){
             try {
-                $this->formController = new FormController($_POST);
+                $this->formController->dispatch($post);
                 $message['content'] = $this->formController->getMessage();
                 $message['type'] = "success";
             } catch (\Exception $e) {
@@ -42,16 +47,29 @@ class Router
 
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
-        var_dump($getP);
+        $elements = explode('/', $path);       // Split path on slashes
+        if(empty($elements[0])) {                       // No path elements means home
+            $this->homeController->viewHome($message);
+        } else switch(array_shift($elements))   // Pop off first item and switch
+        {
+            case 'blog':
+                $this->blogController->viewList();
+                break;
+            case 'addpost':
+                $this->blogController->addPost();
+                break;
+            default:
+                header('HTTP/1.1 404 Not Found');
+        }
 
+        /*
         if (!$getP){
-            $this->homeController = new HomeController;
             $this->homeController->viewHome($message);
 
             return;
         }
 
-        /*
+
         $route = $this->getRouteWithoutRights($getP);
 
         if (!$route AND $this->homeController->checkRights($getP)) {

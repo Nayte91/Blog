@@ -2,13 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95bce8f0-8a93-4f05-99f3-a79b50e6d419" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/BlogController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/blog/blog.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/FormController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/FormController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Post.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/addpost.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/addpost.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -139,6 +142,11 @@
       <workItem from="1574104727637" duration="6278000" />
       <workItem from="1574272852278" duration="3673000" />
       <workItem from="1574612558106" duration="5376000" />
+      <workItem from="1574881198816" duration="1337000" />
+      <workItem from="1575051784102" duration="3206000" />
+      <workItem from="1575121487713" duration="10416000" />
+      <workItem from="1575479705804" duration="6702000" />
+      <workItem from="1575549002731" duration="29671000" />
     </task>
     <task id="LOCAL-00001" summary="Twig installed">
       <created>1566563250617</created>
