@@ -1,17 +1,41 @@
 {% extends "base.html.twig" %}
 
 {% block title %}Nouveau billet - {% endblock %}
-{% block headscript %}<script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>{% endblock %}
+{% block headscript %}<script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>{% endblock %}
 {% block main %}
-    <textarea name="content" id="editor">This is some sample content.</textarea>
+    <h1>Ajouter un billet de blog</h1>
+    <form action="\blog" method="post" class="form-group">
+        <label for="title">Titre</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Titre du billet" required>
+        <label for="chapo">Résumé</label>
+        <input type="text" name="heading" id="chapo" class="form-control" placeholder="1er paragraphe" required>
+        <label for="content">Texte</label>
+        <textarea name="content" id="editor">
+            This is some sample content.
+        </textarea>
+        <input type="hidden" name="userid" id="myFile" value="{{ user }}">
+        <p><input type="submit" value="addpost" class="btn btn-primary" name="form"></p>
+    </form>
+{% endblock %}
+
+{% block endscript %}
     <script>
-            ClassicEditor
-                    .create( document.querySelector( '#editor' ) )
-                    .then( editor => {
-                            console.log( editor );
-                    })
-                    .catch( error => {
-                            console.error( error );
-                    });
+        ClassicEditor
+            .create( document.querySelector( '#editor' ), {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+                title: {
+                    placeholder: 'My custom placeholder for the title'
+                },
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    ]
+                }
+            } )
+            .catch( error => {
+                console.log( error );
+            } );
     </script>
 {% endblock %}

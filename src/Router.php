@@ -29,6 +29,13 @@ class Router
     {
         $path = ltrim($_SERVER['REQUEST_URI'], '/');
         $post = $_POST;
+        $session = $_SESSION;
+
+        if (isset($session) && array_key_exists('id', $session))
+            $post['id'] = $session['id'];
+
+        if (isset($session) && array_key_exists('admin', $session))
+            $post['admin'] = $session['admin'];
 
         $message[] = "";
 
@@ -47,13 +54,12 @@ class Router
 
         $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
-        $elements = explode('/', $path);       // Split path on slashes
-        if(empty($elements[0])) {                       // No path elements means home
+        $elements = explode('/', $path);
+        if(empty($elements[0])) {
             $this->homeController->viewHome($message);
-        } else switch(array_shift($elements))   // Pop off first item and switch
-        {
+        } else switch(array_shift($elements)) {
             case 'blog':
-                $this->blogController->viewList();
+                $this->blogController->viewList($message);
                 break;
             case 'addpost':
                 $this->blogController->addPost();

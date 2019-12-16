@@ -9,7 +9,7 @@ final class HomeController extends AbstractController
     public function viewHome(?array $message): void
     {
 
-        $posts = Post::retrieveLatest(2);
+        $posts = Post::retrieveLatest(5);
 
         // Test
         $foo = [

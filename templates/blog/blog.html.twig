@@ -8,7 +8,12 @@
             <h2>{{ post.title|e }}</h2>
             <strong>By {{ post.name }} on {{ post.date }}</strong>
             <p>{{ post.chapo|e }}</p>
-            <a href="#" class="btn"><i>Lire ce billet...</i></a>
+            <p><a href="#" class="btn text-primary"><i>Lire ce billet...</i></a>
+            {%if user.admin %}
+                <a href="#" class="btn text-success"><i>Editer...</i></a>
+                <a href="#" class="btn text-danger"><i>Supprimer...</i></a>
+            {% endif %}
+            </p>
         {% endfor %}
     </article>
 {% endblock %}

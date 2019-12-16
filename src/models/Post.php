@@ -14,14 +14,15 @@ final class Post extends AbstractEntity
     public static function retrieveFromId(int $id): ?self
     {
         $db = self::dbconnect();
-        $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM post WHERE id = ?');
-        $req->execute(array($postId));
+        $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM post WHERE id = :number');
+        $req->bindParam(':number', $id, \PDO::PARAM_INT);
+        $req->execute();
         $post = $req->fetch();
 
         return $post;
     }
 
-    public static function retrieveFromAuthor(int $author): ?array
+    public static function retrieveFromAuthor(int $author, ?int $number = 0): ?array
     {
 
     }
@@ -46,11 +47,11 @@ final class Post extends AbstractEntity
         $post = new self($data);
 
         $db = self::dbconnect();
-        $query = $db->prepare('INSERT INTO post (creationdate, author, title, heading, content) VALUES (NOW(), :author, :title, :heading, :content)');
+        $query = $db->prepare('INSERT INTO post (creation_date, author, title, chapo, content) VALUES (NOW(), :author, :title, :heading, :content)');
         $query->bindValue(':author', $post->author, \PDO::PARAM_INT);
-        $query->bindValue(':name', $post->title, \PDO::PARAM_STR);
-        $query->bindValue(':password', $post->heading, \PDO::PARAM_STR);
-        $query->bindValue(':email', $post->content, \PDO::PARAM_STR);
+        $query->bindValue(':title', $post->title, \PDO::PARAM_STR);
+        $query->bindValue(':heading', $post->heading, \PDO::PARAM_STR);
+        $query->bindValue(':content', $post->content, \PDO::PARAM_STR);
 
         return $query->execute();
     }

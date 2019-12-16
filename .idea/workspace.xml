@@ -2,17 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95bce8f0-8a93-4f05-99f3-a79b50e6d419" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/controllers/BlogController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/blog/blog.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/AbstractController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/AbstractController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/FormController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/FormController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Post.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/addpost.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/addpost.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/blog.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/blog.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,7 +143,13 @@
       <workItem from="1575051784102" duration="3206000" />
       <workItem from="1575121487713" duration="10416000" />
       <workItem from="1575479705804" duration="6702000" />
-      <workItem from="1575549002731" duration="29671000" />
+      <workItem from="1575549002731" duration="30489000" />
+      <workItem from="1575715599233" duration="512000" />
+      <workItem from="1575821428202" duration="7655000" />
+      <workItem from="1575846289023" duration="1192000" />
+      <workItem from="1576000477583" duration="4280000" />
+      <workItem from="1576147961190" duration="6167000" />
+      <workItem from="1576237383075" duration="26432000" />
     </task>
     <task id="LOCAL-00001" summary="Twig installed">
       <created>1566563250617</created>

@@ -9,7 +9,6 @@ abstract class AbstractController
 {
     protected $user;
     protected $post;
-    protected $comment;
     protected $twig;
     protected $message;
 
