@@ -17,4 +17,11 @@ final class BlogController extends AbstractController
     {
         echo $this->twig->render('blog/addpost.html.twig', ['user' => $_SESSION, 'message' => $message]);
     }
+
+    public function viewPost(int $id, ?array $message = null): void
+    {
+        $post = Post::retrieveFromId($id);
+
+        echo $this->twig->render('blog/viewpost.html.twig', ['post' => $post, 'user' => $_SESSION, 'message' => $message]);
+    }
 }

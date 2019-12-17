@@ -11,86 +11,66 @@ class Router
     private $homeController;
     private $formController;
     private $blogController;
-    //private $postController;
     //private $commentController;
+    private $path;
+    private $post;
+    private $get;
+    private $session;
+    private $server;
 
     public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE){
+        if (session_status() === PHP_SESSION_NONE)
             session_start();
-        }
+
         $this->homeController = new HomeController;
         $this->formController = new FormController;
         $this->blogController = new BlogController;
         //$this->postController = new PostController();
+        $this->path = ltrim($_SERVER['REQUEST_URI'], '/');
+        $this->post = $_POST;
+        $this->get = $_GET;
+        $this->session = $_SESSION;
+        $this->server = $_SERVER;
     }
 
     public function start()
     {
-        $path = ltrim($_SERVER['REQUEST_URI'], '/');
-        $post = $_POST;
-        $session = $_SESSION;
+        if (isset($this->session) && array_key_exists('id', $this->session))
+            $this->post['id'] = $this->session['id'];
 
-        if (isset($session) && array_key_exists('id', $session))
-            $post['id'] = $session['id'];
-
-        if (isset($session) && array_key_exists('admin', $session))
-            $post['admin'] = $session['admin'];
+        if (isset($this->session) && array_key_exists('admin', $this->session))
+            $this->post['admin'] = $this->session['admin'];
 
         $message[] = "";
 
         //Si le $_POST est rempli, lancer le form controller
-        if ($_SERVER["REQUEST_METHOD"] == "POST"){
+        if ($this->server["REQUEST_METHOD"] == "POST"){
             try {
-                $this->formController->dispatch($post);
+                $this->formController->dispatch($this->post);
                 $message['content'] = $this->formController->getMessage();
                 $message['type'] = "success";
             } catch (\Exception $e) {
-                //echo 'raté : ', $e->getmessage();
                 $message['content'] = $e->getmessage();
                 $message['type'] = "error";
             }
         }
 
-        $getP = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
-
-        $elements = explode('/', $path);
-        if(empty($elements[0])) {
-            $this->homeController->viewHome($message);
-        } else switch(array_shift($elements)) {
+        switch(parse_url($this->path, PHP_URL_PATH)) {
+            case '':
+                $this->homeController->viewHome($message);
+                break;
             case 'blog':
                 $this->blogController->viewList($message);
                 break;
             case 'addpost':
                 $this->blogController->addPost();
                 break;
+            case 'post':
+                $this->blogController->viewPost($this->get['id'], $message);
+                break;
             default:
                 header('HTTP/1.1 404 Not Found');
         }
-
-        /*
-        if (!$getP){
-            $this->homeController->viewHome($message);
-
-            return;
-        }
-
-
-        $route = $this->getRouteWithoutRights($getP);
-
-        if (!$route AND $this->homeController->checkRights($getP)) {
-            $route = $this->getRouteWithRights($getP);
-        }
-
-        if ($route AND $this->getController($route['class'])) {
-            if (!$this->{$this->getController($route['class'])}->{$getP}($route['parameters'])) {
-                $errorMessage = isset($GLOBALS['errorMessage']) ? $GLOBALS['errorMessage'] : '';
-                $this->homeController->displayError('Une erreur est survenue<br>' . $errorMessage);
-            }
-            return;
-        }
-
-        $this->homeController->displayError('Action interdite ou page inexistante !!!');
-        */
     }
 }

@@ -13,11 +13,18 @@ final class Post extends AbstractEntity
 
     public static function retrieveFromId(int $id): ?self
     {
+        $post = new self(['id' => $id]);
+
         $db = self::dbconnect();
-        $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM post WHERE id = :number');
+        $req = $db->prepare('SELECT post.id, title, heading, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creationdate, user.name as author FROM post LEFT JOIN user ON post.author = user.id WHERE post.id = :number');
         $req->bindParam(':number', $id, \PDO::PARAM_INT);
         $req->execute();
-        $post = $req->fetch();
+        $response = $req->fetch();
+
+        if (!$response)
+            return null;
+
+        $post->hydrate($response);
 
         return $post;
     }
@@ -31,9 +38,9 @@ final class Post extends AbstractEntity
     {
         $db = self::dbconnect();
         if ($number == 0){
-            $query = $db->prepare("SELECT post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.chapo, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC");
+            $query = $db->prepare("SELECT post.id, post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.heading, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC");
         } else {
-            $query = $db->prepare("SELECT post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.chapo, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC LIMIT :number");
+            $query = $db->prepare("SELECT post.id, post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.heading, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC LIMIT :number");
             $query->bindParam(':number', $number, \PDO::PARAM_INT);
         }
         $query->execute();
@@ -47,7 +54,7 @@ final class Post extends AbstractEntity
         $post = new self($data);
 
         $db = self::dbconnect();
-        $query = $db->prepare('INSERT INTO post (creation_date, author, title, chapo, content) VALUES (NOW(), :author, :title, :heading, :content)');
+        $query = $db->prepare('INSERT INTO post (creation_date, author, title, heading, content) VALUES (NOW(), :author, :title, :heading, :content)');
         $query->bindValue(':author', $post->author, \PDO::PARAM_INT);
         $query->bindValue(':title', $post->title, \PDO::PARAM_STR);
         $query->bindValue(':heading', $post->heading, \PDO::PARAM_STR);
@@ -63,6 +70,16 @@ final class Post extends AbstractEntity
         $query->bindValue(':id', $id, \PDO::PARAM_INT);
 
         return $query->execute();
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = (int)$id;
+    }
+
+    public function setCreationdate($creationdate): void
+    {
+        $this->creationdate = $creationdate;
     }
 
     public function setAuthor($author)
@@ -83,5 +100,30 @@ final class Post extends AbstractEntity
     public function setContent(string $content): void
     {
         $this->content = $content;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function getHeading(): ?string
+    {
+        return $this->heading;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function getCreationdate(): ?string
+    {
+        return $this->creationdate;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
     }
 }

@@ -46,7 +46,6 @@ final class FormController extends AbstractController
             throw new \Exception("identifiants invalides");
 
         $_SESSION = $user->getAll();
-
         $this->message = "Connexion réussie";
     }
 
@@ -61,11 +60,10 @@ final class FormController extends AbstractController
         if (array_search("", $form))
             throw new \Exception("bien joué le formulaire vide");
 
-        if(User::createOne($form)){
-            $this->message = "Compte créé, connectez-vous";
-        } else {
+        if(!User::createOne($form))
             throw new \Exception("Création ratée");
-        }
+
+        $this->message = "Compte créé, connectez-vous";
     }
 
     public function signout(): void
@@ -73,12 +71,11 @@ final class FormController extends AbstractController
         if (!array_key_exists("id", $_SESSION) || !$_SESSION['id'])
             throw new \Exception("Petit coquinou");
 
-        if(User::deleteFromId($_SESSION['id'])){
-            $_SESSION = [];
-            $this->message = "Compte détruit";
-        } else {
+        if(!User::deleteFromId($_SESSION['id']))
             throw new \Exception("Destruction ratée ?");
-        }
+
+        $_SESSION = [];
+        $this->message = "Compte détruit";
     }
 
     /**
@@ -87,26 +84,19 @@ final class FormController extends AbstractController
      */
     public function addpost(array $form): void
     {
-        if (array_search("", $form))
-            throw new \Exception("bien joué le formulaire vide");
-
-        if ($form['admin'] != 1){
-            return;
-        }
-
         $form['author'] = $form['id'];
         unset($form['id']);
 
-        if(Post::createOne($form)){
-            echo 'toto';
-            $this->message = "Billet bien ajouté !";
-        } else {
+        if (array_search("", $form))
+            throw new \Exception("bien joué le formulaire vide");
+
+        if ($form['admin'] != 1)
+            throw new \Exception("Pas admin, que fais tu là ?");
+
+        if(!Post::createOne($form))
             throw new \Exception("Billet non ajouté");
-        }
 
-        //$post = new Post($form);
-
-        //$post->createOne();
+        $this->message = "Billet bien ajouté !";
     }
 
     public function contact($form): void

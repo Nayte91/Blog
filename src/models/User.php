@@ -15,6 +15,7 @@ final class User extends AbstractEntity
     {
         $user = new self($data);
         //$user->securePassword();
+
         $db = self::dbconnect();
         $query = $db->prepare('SELECT * FROM user WHERE name = :name');
         $query->bindValue(':name', $user->name, \PDO::PARAM_STR);

@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Consultation billet - {% endblock %}
+
+{% block main %}
+    <h1>{{ post.title }}</h1>
+    <strong>Ecrit par {{ post.author }} le {{ post.creationdate }}</strong>
+    <h4><i>{{ post.heading }}</i></h4>
+    {{ post.content | raw }}
+{% endblock %}
