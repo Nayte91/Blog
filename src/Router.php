@@ -8,25 +8,25 @@ use P5blog\controllers\BlogController;
 
 class Router
 {
-    private $homeController;
-    private $formController;
-    private $blogController;
-    //private $commentController;
-    private $path;
-    private $post;
-    private $get;
-    private $session;
-    private $server;
+    private HomeController $hc;
+    private FormController $fc;
+    private BlogController $bc;
+    //private CommentController $commentController;
+    private string $path;
+    private array $post;
+    private array $get;
+    private array $session;
+    private array $server;
 
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE)
             session_start();
 
-        $this->homeController = new HomeController;
-        $this->formController = new FormController;
-        $this->blogController = new BlogController;
-        //$this->postController = new PostController();
+        $this->hc = new HomeController;
+        $this->fc = new FormController;
+        $this->bc = new BlogController;
+        //$this->cc = new CommentController;
         $this->path = ltrim($_SERVER['REQUEST_URI'], '/');
         $this->post = $_POST;
         $this->get = $_GET;
@@ -47,8 +47,8 @@ class Router
         //Si le $_POST est rempli, lancer le form controller
         if ($this->server["REQUEST_METHOD"] == "POST"){
             try {
-                $this->formController->dispatch($this->post);
-                $message['content'] = $this->formController->getMessage();
+                $this->fc->dispatch($this->post);
+                $message['content'] = $this->fc->getMessage();
                 $message['type'] = "success";
             } catch (\Exception $e) {
                 $message['content'] = $e->getmessage();
@@ -58,16 +58,16 @@ class Router
 
         switch(parse_url($this->path, PHP_URL_PATH)) {
             case '':
-                $this->homeController->viewHome($message);
+                $this->hc->viewHome($message);
                 break;
             case 'blog':
-                $this->blogController->viewList($message);
+                $this->bc->viewList($message);
                 break;
             case 'addpost':
-                $this->blogController->addPost();
+                $this->bc->addPost();
                 break;
             case 'post':
-                $this->blogController->viewPost($this->get['id'], $message);
+                $this->bc->viewPost($this->get['id'], $message);
                 break;
             default:
                 header('HTTP/1.1 404 Not Found');

@@ -4,14 +4,14 @@ namespace P5blog\models;
 
 final class Post extends AbstractEntity
 {
-    private $id;
-    private $creationdate;
-    private $author;
-    private $title;
-    private $heading;
-    private $content;
+    public int $id;
+    public string $creationdate;
+    public string $author;
+    public string $title;
+    public string $heading;
+    public string $content;
 
-    public static function retrieveFromId(int $id): ?self
+    public static function retrieveFromId(int $id): self
     {
         $post = new self(['id' => $id]);
 
@@ -22,27 +22,26 @@ final class Post extends AbstractEntity
         $response = $req->fetch();
 
         if (!$response)
-            return null;
+            throw new \Exception("Impossible de récupérer le billet");
 
         $post->hydrate($response);
 
         return $post;
     }
 
-    public static function retrieveFromAuthor(int $author, ?int $number = 0): ?array
-    {
-
-    }
+    public static function retrieveFromAuthor(int $author, ?int $number = 0): ?array {}
 
     public static function retrieveLatest(?int $number = 0): ?array
     {
         $db = self::dbconnect();
+
         if ($number == 0){
             $query = $db->prepare("SELECT post.id, post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.heading, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC");
         } else {
             $query = $db->prepare("SELECT post.id, post.title, DATE_FORMAT(post.creation_date, \"%W, %e %M %Y\") as date, post.heading, post.content, user.name FROM post LEFT JOIN user ON post.author = user.id ORDER BY creation_date DESC LIMIT :number");
             $query->bindParam(':number', $number, \PDO::PARAM_INT);
         }
+
         $query->execute();
         $response = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -63,7 +62,7 @@ final class Post extends AbstractEntity
         return $query->execute();
     }
 
-    public static function deleteFromId(int $id): ?bool
+    public static function deleteFromId(int $id): bool
     {
         $db = self::dbconnect();
         $query = $db->prepare('DELETE FROM post WHERE id = :id');
@@ -77,22 +76,22 @@ final class Post extends AbstractEntity
         $this->id = (int)$id;
     }
 
-    public function setCreationdate($creationdate): void
+    public function setCreationdate(string $creationdate): void
     {
         $this->creationdate = $creationdate;
     }
 
-    public function setAuthor($author)
+    public function setAuthor(string $author): void
     {
         $this->author = $author;
     }
 
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    public function setHeading($heading)
+    public function setHeading(string $heading): void
     {
         $this->heading = $heading;
     }
@@ -100,30 +99,5 @@ final class Post extends AbstractEntity
     public function setContent(string $content): void
     {
         $this->content = $content;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function getHeading(): ?string
-    {
-        return $this->heading;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function getCreationdate(): ?string
-    {
-        return $this->creationdate;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
     }
 }

@@ -30,6 +30,9 @@ final class FormController extends AbstractController
             case "contact":
                 $this->contact($form);
                 break;
+            case "deletePost":
+                $this->deletePost($form);
+                break;
             default:
                 break;
         }
@@ -82,7 +85,7 @@ final class FormController extends AbstractController
      * @param array $form -> 'form', 'title', 'heading', 'content', 'id', 'admin'
      * @throws \Exception
      */
-    public function addpost(array $form): void
+    public function addPost(array $form): void
     {
         $form['author'] = $form['id'];
         unset($form['id']);
@@ -99,6 +102,14 @@ final class FormController extends AbstractController
         $this->message = "Billet bien ajouté !";
     }
 
+    public function deletePost(array $form): void
+    {
+
+        if(!Post::deleteFromId($form['postid']))
+            throw new \Exception("Impossible de supprimer ce billet...");
+
+        $this->message = "Billet détruit !";
+    }
     public function contact($form): void
     {
 

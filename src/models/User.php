@@ -4,17 +4,16 @@ namespace P5blog\models;
 
 final class User extends AbstractEntity
 {
-    private $id;
-    private $name;
-    private $email;
-    private $password;
-    private $admin;
-    private $creationdate;
+    private int $id;
+    private string $name;
+    private string $email;
+    private string $password;
+    private int $admin;
+    private string $creationdate;
 
     public static function retrieveFromName(array $data): ?self
     {
         $user = new self($data);
-        //$user->securePassword();
 
         $db = self::dbconnect();
         $query = $db->prepare('SELECT * FROM user WHERE name = :name');
@@ -22,13 +21,11 @@ final class User extends AbstractEntity
         $query->execute();
         $response = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if ($response) {
-            $user->hydrate($response);
+        if (!$response)
+            throw new \Exception("Impossible de récupérer l'utilisateur'");
 
-            return $user;
-        } else {
-            return null;
-        }
+        $user->hydrate($response);
+        return $user;
     }
 
     public static function retrieveFromEmail(array $data): ?self
@@ -40,18 +37,11 @@ final class User extends AbstractEntity
         $query->execute();
         $response = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if ($response) {
-            $user->id = $response['id'];
-            $user->name = $response['name'];
-            $user->email = $response['email'];
-            $user->password = $response['password'];
-            $user->creationdate = $response['creationdate'];
-            $user->admin = $response['admin'];
+        if ($response)
+            throw new \Exception("Impossible de récupérer l'utilisateur'");
 
-            return $user;
-        } else {
-            return null;
-        }
+        $user->hydrate($response);
+        return $user;
     }
 
     public static function retrieveAll(): ?array
@@ -67,14 +57,13 @@ final class User extends AbstractEntity
     public static function createOne(array $data): bool
     {
         $user = new self($data);
+        $user->securePassword();
 
-        if (self::retrieveFromName($data)) {
+        if ($user->verifyName())
             throw new \Exception("Ce nom existe déjà");
-        }
 
-        if (self::retrieveFromEmail($data)) {
+        if ($user->verifyEmail())
             throw new \Exception("Cette adresse existe déjà");
-        }
 
         $db = self::dbconnect();
         $query = $db->prepare('INSERT INTO user (name, password, email, creationdate, admin) VALUES (:name, :password, :email, NOW(), 0)');
@@ -103,30 +92,23 @@ final class User extends AbstractEntity
     {
         $len = mb_strlen($name);
 
-        if (($len > 3) || ($len < 16)){
-            $this->name = ucfirst(trim($name));
-        } else {
+        if (($len < 3) || ($len > 16))
             throw new \Exception("Login invalide");
-        }
+
+        $this->name = ucfirst(trim($name));
     }
 
     public function setEmail($email): void
     {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)){
-            $this->email = $email;
-        } else {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new \Exception("C'est une adresse mail ça ?");
-        }
+
+        $this->email = $email;
     }
 
     public function setPassword(string $password): void
     {
         $this->password = $password;
-    }
-
-    public function securePassword(): void
-    {
-        $this->password = password_hash(trim($this->password), PASSWORD_DEFAULT);
     }
 
     public function setAdmin(int $admin): void
@@ -159,8 +141,35 @@ final class User extends AbstractEntity
         return $this->email;
     }
 
+    public function securePassword(): void
+    {
+        $this->password = password_hash(trim($this->password), PASSWORD_DEFAULT);
+    }
+
     public function verifyPassword($password): bool
     {
         return password_verify($password, $this->password);
+    }
+
+    public function verifyName(): bool
+    {
+        $db = self::dbconnect();
+        $query = $db->prepare('SELECT * FROM user WHERE name = :name');
+        $query->bindValue(':name', $this->name, \PDO::PARAM_STR);
+        $query->execute();
+        $response = $query->fetch(\PDO::FETCH_ASSOC);
+
+        return $response == false ? false : true;
+    }
+
+    public function verifyEmail(): bool
+    {
+        $db = self::dbconnect();
+        $query = $db->prepare('SELECT * FROM user WHERE email = :email');
+        $query->bindValue(':email', $this->email, \PDO::PARAM_STR);
+        $query->execute();
+        $response = $query->fetch(\PDO::FETCH_ASSOC);
+
+        return $response == false ? false : true;
     }
 }
