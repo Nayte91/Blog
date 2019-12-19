@@ -71,6 +71,16 @@ final class Post extends AbstractEntity
         return $query->execute();
     }
 
+    public static function updateOne(array $data): bool
+    {
+        $post = new self($data);
+
+        $db = self::dbconnect();
+        $query = $db->prepare('UPDATE post SET title=?, heading=?, content=? WHERE id=?');
+
+        return $query->execute([$post->title, $post->heading, $post->content, $post->id ]);
+    }
+
     public function setId(int $id): void
     {
         $this->id = (int)$id;

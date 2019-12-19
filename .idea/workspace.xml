@@ -2,15 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95bce8f0-8a93-4f05-99f3-a79b50e6d419" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/P5-Blog.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/P5-Blog.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/img/photo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/ckeditor.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/blog/updatepost.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/2000px-Signin_font_awesome.svg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/portfolio/cabin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/portfolio/cake.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/portfolio/circus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/portfolio/game.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/portfolio/safe.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/portfolio/submarine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/profile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/signin.svg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/BlogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/BlogController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/FormController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/FormController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Post.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/addpost.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/addpost.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/blog.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/blog.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,6 +58,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -70,17 +84,24 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1TkDZTJKde43XZvWTW2bAKZgCoH" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/blog" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Developpement\P5Blog\templates\blog" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Developpement\P5Blog\templates\blog" />
       <recent name="D:\Developpement\P5-Blog" />
@@ -151,7 +172,9 @@
       <workItem from="1576000477583" duration="4280000" />
       <workItem from="1576147961190" duration="6167000" />
       <workItem from="1576237383075" duration="28297000" />
-      <workItem from="1576581579192" duration="19427000" />
+      <workItem from="1576581579192" duration="20751000" />
+      <workItem from="1576686791387" duration="8215000" />
+      <workItem from="1576751474481" duration="9765000" />
     </task>
     <task id="LOCAL-00001" summary="Twig installed">
       <created>1566563250617</created>
@@ -208,6 +231,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Twig installed" />
     <MESSAGE value="Templates fonctionnels" />
     <MESSAGE value="Router works !" />

@@ -27,11 +27,14 @@ final class FormController extends AbstractController
             case "addpost":
                 $this->addPost($form);
                 break;
-            case "contact":
-                $this->contact($form);
-                break;
             case "deletePost":
                 $this->deletePost($form);
+                break;
+            case "updatePost":
+                $this->updatePost($form);
+                break;
+            case "contact":
+                $this->contact($form);
                 break;
             default:
                 break;
@@ -104,12 +107,33 @@ final class FormController extends AbstractController
 
     public function deletePost(array $form): void
     {
-
         if(!Post::deleteFromId($form['postid']))
             throw new \Exception("Impossible de supprimer ce billet...");
 
         $this->message = "Billet détruit !";
     }
+
+    /**
+     * @param array $form -> 'form', 'postId', 'userId', 'title', 'heading', 'content', 'admin'
+     * @throws \Exception
+     */
+    public function updatePost(array $form): void
+    {
+        $form['id'] = $form['postid'];
+        unset($form['postid']);
+
+        if (array_search("", $form))
+            throw new \Exception("bien joué le formulaire vide");
+
+        if ($form['admin'] != 1)
+            throw new \Exception("Pas admin, que fais tu là ?");
+
+        if(!Post::updateOne($form))
+            throw new \Exception("Billet non modifié");
+
+        $this->message = "Billet modifié";
+    }
+
     public function contact($form): void
     {
 
