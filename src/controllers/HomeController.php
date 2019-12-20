@@ -2,11 +2,14 @@
 
 namespace P5blog\controllers;
 
+use P5blog\models\Post;
+
 final class HomeController extends AbstractController
 {
     public function viewHome(?array $message): void
     {
-        //$uc = new UserController();
+
+        $posts = Post::retrieveLatest(5);
 
         // Test
         $foo = [
@@ -17,10 +20,7 @@ final class HomeController extends AbstractController
             ['name' => 'Eve'],
         ];
 
-        echo $this->twig->render('home.html.twig', ['foo' => $foo, 'user' => $_SESSION, 'message' => $message]);
-        //echo $this->twig->render('user.html.twig', ['user' => (array)$user]);
-
-        //$uc->viewLogin();
+        echo $this->twig->render('home.html.twig', ['posts' => $posts, 'foo' => $foo, 'user' => $_SESSION, 'message' => $message]);
     }
     /*
     public function viewContact()

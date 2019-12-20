@@ -3,14 +3,15 @@
 namespace P5blog\controllers;
 
 use P5blog\models\User;
-use P5blog\models\UserManager;
+use P5blog\models\Post;
 
 final class FormController extends AbstractController
 {
-    public function __construct(array $form)
+    public function dispatch(array $form): void
     {
         //Vérifier le POST de login
-        switch ($form['form']){
+        switch ($form['form'])
+        {
             case "login":
                 $this->login($form);
                 break;
@@ -22,6 +23,18 @@ final class FormController extends AbstractController
                 break;
             case "signout":
                 $this->signout();
+                break;
+            case "addpost":
+                $this->addPost($form);
+                break;
+            case "deletePost":
+                $this->deletePost($form);
+                break;
+            case "updatePost":
+                $this->updatePost($form);
+                break;
+            case "contact":
+                $this->contact($form);
                 break;
             default:
                 break;
@@ -35,13 +48,10 @@ final class FormController extends AbstractController
 
         $user = User::retrieveFromName($form);
 
-        if (!isset($user) || !$user->verifyPassword($form['password'])){
+        if (!isset($user) || !$user->verifyPassword($form['password']))
             throw new \Exception("identifiants invalides");
-        }
 
-        //Ca c'est le résultat
         $_SESSION = $user->getAll();
-
         $this->message = "Connexion réussie";
     }
 
@@ -56,24 +66,76 @@ final class FormController extends AbstractController
         if (array_search("", $form))
             throw new \Exception("bien joué le formulaire vide");
 
-        if(User::createOne($form)){
-            $this->message = "Compte créé, connectez-vous";
-        } else {
+        if(!User::createOne($form))
             throw new \Exception("Création ratée");
-        }
+
+        $this->message = "Compte créé, connectez-vous";
     }
 
     public function signout(): void
     {
-        if (!array_key_exists("id", $_SESSION) || !$_SESSION['id']){
+        if (!array_key_exists("id", $_SESSION) || !$_SESSION['id'])
             throw new \Exception("Petit coquinou");
-        }
 
-        if(User::deleteFromId($_SESSION['id'])){
-            $_SESSION = [];
-            $this->message = "Compte détruit";
-        } else {
+        if(!User::deleteFromId($_SESSION['id']))
             throw new \Exception("Destruction ratée ?");
-        }
+
+        $_SESSION = [];
+        $this->message = "Compte détruit";
+    }
+
+    /**
+     * @param array $form -> 'form', 'title', 'heading', 'content', 'id', 'admin'
+     * @throws \Exception
+     */
+    public function addPost(array $form): void
+    {
+        $form['author'] = $form['id'];
+        unset($form['id']);
+
+        if (array_search("", $form))
+            throw new \Exception("bien joué le formulaire vide");
+
+        if ($form['admin'] != 1)
+            throw new \Exception("Pas admin, que fais tu là ?");
+
+        if(!Post::createOne($form))
+            throw new \Exception("Billet non ajouté");
+
+        $this->message = "Billet bien ajouté !";
+    }
+
+    public function deletePost(array $form): void
+    {
+        if(!Post::deleteFromId($form['postid']))
+            throw new \Exception("Impossible de supprimer ce billet...");
+
+        $this->message = "Billet détruit !";
+    }
+
+    /**
+     * @param array $form -> 'form', 'postId', 'userId', 'title', 'heading', 'content', 'admin'
+     * @throws \Exception
+     */
+    public function updatePost(array $form): void
+    {
+        $form['id'] = $form['postid'];
+        unset($form['postid']);
+
+        if (array_search("", $form))
+            throw new \Exception("bien joué le formulaire vide");
+
+        if ($form['admin'] != 1)
+            throw new \Exception("Pas admin, que fais tu là ?");
+
+        if(!Post::updateOne($form))
+            throw new \Exception("Billet non modifié");
+
+        $this->message = "Billet modifié";
+    }
+
+    public function contact($form): void
+    {
+
     }
 }
