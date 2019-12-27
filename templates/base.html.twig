@@ -50,7 +50,11 @@
     </section>
 
     <footer>
-        <div class="align-middle">Contactez moi</div>
+        <div class="align-middle">
+            <a href="#contact" data-toggle="modal" data-target="#contact">
+                <i class="far fa-envelope"> Contactez moi</i>
+            </a>
+        </div>
         <div class="text-center">
             <div>Retrouvez moi sur :</div>
             <ul class="list-inline fa-ul mb-0 align-middle">
@@ -72,6 +76,31 @@
     </footer>
 
 {% block modal %}{% endblock %}
+    <div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="contact" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Contactez-moi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/" method="post">
+                    <div class="modal-body">
+                        <label for="name">Votre nom</label>
+                        <input class="form-control" name="name" type="text" />
+                        <label for="email">Votre adresse mail</label>
+                        <input class="form-control" name="email" type="email" />
+                        <label for="message">Votre message</label>
+                        <textarea class="form-control" name="message"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type=submit class="btn btn-primary" id="form" name="form" value="contact">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% block endscript %}{% endblock %}
 </body>
 </html>

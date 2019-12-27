@@ -4,6 +4,7 @@
       "psr-4": { "P5blog\\": "src/" }
   },
   "require": {
-    "twig/twig": "3.*"
+    "twig/twig": "3.*",
+    "phpstan/phpstan": "^0.12.3"
   }
 }

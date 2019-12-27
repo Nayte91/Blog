@@ -66,6 +66,7 @@ final class User extends AbstractEntity
             throw new \Exception("Cette adresse existe déjà");
 
         $db = self::dbconnect();
+        var_dump($db);
         $query = $db->prepare('INSERT INTO user (name, password, email, creationdate, admin) VALUES (:name, :password, :email, NOW(), 0)');
         $query->bindValue(':name', $user->name, \PDO::PARAM_STR);
         $query->bindValue(':password', $user->password, \PDO::PARAM_STR);
@@ -126,10 +127,6 @@ final class User extends AbstractEntity
         return get_object_vars($this);
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 
     public function getAdmin(): ?int
     {
@@ -159,7 +156,7 @@ final class User extends AbstractEntity
         $query->execute();
         $response = $query->fetch(\PDO::FETCH_ASSOC);
 
-        return $response == false ? false : true;
+        return (bool)$response;
     }
 
     public function verifyEmail(): bool
@@ -170,6 +167,6 @@ final class User extends AbstractEntity
         $query->execute();
         $response = $query->fetch(\PDO::FETCH_ASSOC);
 
-        return $response == false ? false : true;
+        return (bool)$response;
     }
 }
