@@ -1,9 +1,6 @@
 # P5-Blog
 Blog pour le projet 5 de la formation OCR, par Julien Robic
 
-TODO: Interface entity pour lier aux controllers
-TODO : Logo Julien Robic avec typo Anagraph/ephemere
-TODO : Favicon "JR"
-TODO : Partie blog sur https://openclassrooms.com/fr/courses/4670706-adoptez-une-architecture-mvc-en-php
-TODO : Partie UML sur https://openclassrooms.com/fr/courses/1665806-programmez-en-oriente-objet-en-php
-TODO : TD blog sur https://www.youtube.com/watch?v=cWoq5znh0vw&list=PLjwdMgw5TTLVDv-ceONHM_C19dPW1MAMD
+Gestion des utilisateurs : Créer votre compte, modifiez le, supprimez le.
+Gestion des billets de blog : Si vous êtes administrateurs, écrivez votre billet de blog, éditez le, ou supprimez le.
+Gestion des commentaires : Créez un commentaire, et celi ci sera soumis à validation aux administrateurs. Ils seront ensuite affiché sous les billets !
