@@ -55,12 +55,17 @@ final class FormController extends AbstractController
         if (empty($form['name']) || !isset($form['name']) || empty($form['password']) || !isset($form['password']))
             throw new \Exception("bien joué le formulaire vide");
 
-        $user = User::retrieveFromName($form);
+        try {
+            $user = User::retrieveFromName($form);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
 
         if (!isset($user) || !$user->verifyPassword($form['password']))
             throw new \Exception("identifiants invalides");
 
         $_SESSION = $user->getAll();
+
         $this->message = "Connexion réussie";
     }
 

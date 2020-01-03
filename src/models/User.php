@@ -25,6 +25,7 @@ final class User extends AbstractEntity
             throw new \Exception("Impossible de récupérer l'utilisateur'");
 
         $user->hydrate($response);
+
         return $user;
     }
 

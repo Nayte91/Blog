@@ -6,7 +6,7 @@ trait DBConnector
 {
     protected static function dbconnect(): \PDO
     {
-        Require_once './config.php';
+        Require './config.php';
 
         try
         {

@@ -8,9 +8,8 @@ final class HomeController extends AbstractController
 {
     public function viewHome(?array $message): void
     {
-
         $posts = Post::retrieveLatest(5);
-
+        var_dump("toto");
         // Test
         $foo = [
             ['name' => 'Alice'],

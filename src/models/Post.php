@@ -29,7 +29,7 @@ final class Post extends AbstractEntity
         return $post;
     }
 
-    public static function retrieveFromAuthor(int $author, ?int $number = 0): ?array {}
+    public static function retrieveFromAuthor(int $author, ?int $number = 0): ?array { return null; }
 
     public static function retrieveLatest(?int $number = 0): ?array
     {
