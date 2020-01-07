@@ -58,19 +58,19 @@ class Router
 
         switch(parse_url($this->path, PHP_URL_PATH)) {
             case '':
-                $this->hc->viewHome($this->message);
+                $this->hc->viewHome($this->session, $this->message);
                 break;
             case 'blog':
-                $this->bc->viewIndex($this->message);
+                $this->bc->viewIndex($this->session, $this->message);
                 break;
             case 'addpost':
-                $this->bc->addPost();
+                $this->bc->addPost($this->session, $this->message);
                 break;
             case 'post':
-                $this->bc->viewPost($this->get['id'], $this->message);
+                $this->bc->viewPost($this->get['id'], $this->session, $this->message);
                 break;
             case 'updatepost':
-                $this->bc->updatePost($this->get['id']);
+                $this->bc->updatePost($this->get['id'], $this->session);
                 break;
             default:
                 header('HTTP/1.1 404 Not Found');

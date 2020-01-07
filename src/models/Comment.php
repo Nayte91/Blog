@@ -83,9 +83,6 @@ final class Comment extends AbstractEntity
         $query->bindValue(':user', $comment->userid, \PDO::PARAM_INT);
         $query->bindValue(':content', $comment->content, \PDO::PARAM_STR);
 
-        echo '<br />toto <br />';
-        var_dump($comment);
-
         return $query->execute();
     }
 

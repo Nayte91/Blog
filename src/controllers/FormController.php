@@ -181,7 +181,7 @@ final class FormController extends AbstractController
     {
         if(empty($form['content']))
             throw new \Exception("On envoie du vide ?");
-        var_dump($form);
+
         Comment::createOne($form);
         $this->message = "Votre commentaire est enregistré et soumis à validation";
     }
