@@ -11,7 +11,7 @@ class Router
     private HomeController $hc;
     private FormController $fc;
     private BlogController $bc;
-    //private CommentController $cc;
+
     private string $path;
     private array $post;
     private array $get;
@@ -27,14 +27,13 @@ class Router
         $this->hc = new HomeController;
         $this->fc = new FormController;
         $this->bc = new BlogController;
-        //$this->cc = new CommentController;
+
         $this->path = ltrim($_SERVER['REQUEST_URI'], '/');
         $this->post = $_POST;
         $this->get = $_GET;
+        $this->server = $_SERVER;
         if (isset($_SESSION))
             $this->session = $_SESSION;
-
-        $this->server = $_SERVER;
     }
 
     public function start()
@@ -62,7 +61,7 @@ class Router
                 $this->hc->viewHome($this->message);
                 break;
             case 'blog':
-                $this->bc->viewList($this->message);
+                $this->bc->viewIndex($this->message);
                 break;
             case 'addpost':
                 $this->bc->addPost();

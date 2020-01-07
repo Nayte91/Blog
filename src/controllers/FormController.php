@@ -2,6 +2,7 @@
 
 namespace P5blog\controllers;
 
+use P5blog\models\Comment;
 use P5blog\models\User;
 use P5blog\models\Post;
 
@@ -178,7 +179,11 @@ final class FormController extends AbstractController
 
     private function addComment(array $form)
     {
-
+        if(empty($form['content']))
+            throw new \Exception("On envoie du vide ?");
+        var_dump($form);
+        Comment::createOne($form);
+        $this->message = "Votre commentaire est enregistré et soumis à validation";
     }
 
     private function updateComment(array $form)

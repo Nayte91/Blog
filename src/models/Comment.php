@@ -8,23 +8,23 @@ namespace P5blog\models;
  */
 final class Comment extends AbstractEntity
 {
-    private int $id;
-    private int $postId;
-    private string $author;
-    private string $content;
-    private string $modificationdate;
+    public int $id;
+    public int $postid;
+    public int $userid;
+    public string $content;
+    public string $modificationdate;
 
     /**
-     * Retrieve all comments related to a blog post, stocked in database.
-     * @param int $postId
-     * @return array collection of comments.
+     * Retrieve valid comments related to a blog post, stocked in database.
+     * @param int $postid
+     * @return array of comments properties.
      */
-    public static function retrieveFromPost(int $postId): array
+    public static function retrieveFromPost(int $postid): array
     {
         $db = self::dbconnect();
 
-        $query = $db->prepare("SELECT comment.id, comment.title, DATE_FORMAT(comment.modification_date, \"%W, %e %M %Y\") as modificationdate, comment.content, comment.author FROM comment LEFT JOIN post ON comment.post_id = post.id WHERE post_id = :postid ORDER BY modification_date DESC");
-        $query->bindValue(':postid', $postId, \PDO::PARAM_INT);
+        $query = $db->prepare("SELECT comment.id, DATE_FORMAT(comment.modification_date, \"%W, %e %M %Y\") as modificationdate, comment.content, user.name FROM comment LEFT JOIN post ON comment.post_id = post.id LEFT JOIN user ON comment.user_id = user.id WHERE post_id = :postid AND valid = 1 ORDER BY modification_date DESC");
+        $query->bindValue(':postid', $postid, \PDO::PARAM_INT);
 
         $query->execute();
         $response = $query->fetchAll(\PDO::FETCH_ASSOC);
@@ -33,8 +33,27 @@ final class Comment extends AbstractEntity
     }
 
     /**
+     * Count the number of comments for a post.
+     * @param int $postid
+     * @return int
+     */
+    public static function countFromPost(int $postid): int
+    {
+        $db = self::dbconnect();
+
+        $query = $db->prepare('SELECT COUNT(*) as cnt FROM comment WHERE post_id = :postid');
+        $query->bindValue(':postid', $postid, \PDO::PARAM_INT);
+
+        $query->execute();
+        $response = $query->fetch(\PDO::FETCH_ASSOC);
+
+        unset($db);
+        return $response['cnt'];
+    }
+
+    /**
      * Retrieve all comments not yet validated, stocked in database.
-     * @return array collection of comments.
+     * @return array of comments properties.
      */
     public static function retrievePending(): array
     {
@@ -45,6 +64,7 @@ final class Comment extends AbstractEntity
         $query->execute();
         $response = $query->fetchAll(\PDO::FETCH_ASSOC);
 
+        unset($db);
         return $response;
     }
 
@@ -52,13 +72,19 @@ final class Comment extends AbstractEntity
      * Insert this comment into database
      * @return bool states if record was successful or not.
      */
-    public function createOne(): bool
+    public function createOne(array $data): bool
     {
+        $comment = new self($data);
+
         $db = self::dbconnect();
 
-        $query = $db->prepare('INSERT INTO comment (modification_date, author, content) VALUES (NOW(), :author, :content)');
-        $query->bindValue(':author', $this->author, \PDO::PARAM_INT);
-        $query->bindValue(':content', $this->content, \PDO::PARAM_STR);
+        $query = $db->prepare('INSERT INTO comment (modification_date, post_id, user_id, content) VALUES (NOW(), :post, :user, :content)');
+        $query->bindValue(':post', $comment->postid, \PDO::PARAM_INT);
+        $query->bindValue(':user', $comment->userid, \PDO::PARAM_INT);
+        $query->bindValue(':content', $comment->content, \PDO::PARAM_STR);
+
+        echo '<br />toto <br />';
+        var_dump($comment);
 
         return $query->execute();
     }
@@ -119,11 +145,28 @@ final class Comment extends AbstractEntity
         $this->content = $content;
     }
 
-    public function setAuthor(string $author): void
+    public function setUserid(string $userid): void
     {
-        if (strlen($author) > 10)
-            throw new \Exception('Nom trop long !');
+        $this->userid = $userid;
+    }
 
-        $this->author = $author;
+    public function setPostid(int $postid):void
+    {
+        $this->postid = $postid;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getPostid(): int
+    {
+        return $this->postid;
+    }
+
+    public function getModificationdate(): string
+    {
+        return $this->modificationdate;
     }
 }
