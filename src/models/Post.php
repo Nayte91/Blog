@@ -5,7 +5,7 @@ namespace P5blog\models;
 final class Post extends AbstractEntity
 {
     public int $id;
-    public string $creationdate;
+    public string $modificationdate;
     public string $author;
     public string $title;
     public string $heading;
@@ -16,7 +16,7 @@ final class Post extends AbstractEntity
         $post = new self(['id' => $id]);
 
         $db = self::dbconnect();
-        $req = $db->prepare('SELECT post.id, title, heading, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creationdate, user.name as author FROM post LEFT JOIN user ON post.author = user.id WHERE post.id = :number');
+        $req = $db->prepare('SELECT post.id, title, heading, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modificationdate, user.name as author FROM post LEFT JOIN user ON post.author = user.id WHERE post.id = :number');
         $req->bindParam(':number', $id, \PDO::PARAM_INT);
         $req->execute();
         $response = $req->fetch();
@@ -29,7 +29,7 @@ final class Post extends AbstractEntity
         return $post;
     }
 
-    public static function retrieveFromAuthor(int $author, ?int $number = 0): ?array {}
+    public static function retrieveFromAuthor(int $author, ?int $number = 0): ?array { return null; }
 
     public static function retrieveLatest(?int $number = 0): ?array
     {
@@ -44,6 +44,7 @@ final class Post extends AbstractEntity
 
         $query->execute();
         $response = $query->fetchAll(\PDO::FETCH_ASSOC);
+        unset($db);
 
         return $response;
     }
@@ -86,9 +87,9 @@ final class Post extends AbstractEntity
         $this->id = (int)$id;
     }
 
-    public function setCreationdate(string $creationdate): void
+    public function setModificationdate(string $modificationdate): void
     {
-        $this->creationdate = $creationdate;
+        $this->modificationdate = $modificationdate;
     }
 
     public function setAuthor(string $author): void

@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Admin {% endblock %}
+
+{% block menu %}
+    <nav>
+        <a href="#"><h5>ADMIN</h5></a>
+    </nav>
+{% endblock %}
+{% block main %}
+    <article>
+        <h2>Interface d'administration</h2>
+        <p>Bienvenue {{ user.name }}</p>
+    </article>
+
+    <article>
+        <h2> Liste des commentaires en attente de validation</h2>
+        <ul>
+            {% for comment in comments %}
+                <li>{{ comment.modificationdate|date('Y-m-d H:i:s') }} - <i>{{ comment.content }}</i> - par {{ comment.author }} (#{{ comment.userid }})
+                    <a href="/post?id={{ comment.postid }}">dans ce billet</a>
+                    <a href="/admin/delete"><button class="btn btn-success">Valider</button></a>
+                    <button class="btn btn-danger">Supprimer</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </article>
+{% endblock %}

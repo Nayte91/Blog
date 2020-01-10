@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Blog {% endblock %}
+
+{% block main %}
+    <article>
+        {% for post in posts %}
+            <h2><a href="\post?id={{ post.id }}">{{ post.title|e }}</a></h2>
+            <strong>By {{ post.name }} on {{ post.date }}</strong>
+            <p>{{ post.heading|e }}</p>
+            <p><i><small>{{ post.comments }} commentaire{% if post.comments > 1 %}s{% endif %}</small></i></p>
+            {%if user.admin %}
+                <a href="\updatepost?id={{ post.id }}" class="btn text-success"><i>Editer...</i></a>
+            {% endif %}
+            <hr />
+        {% endfor %}
+    </article>
+{% endblock %}
+
+{% block section %}
+    {%if user.admin %}
+        <h5>Ecrire un nouveau billet !</h5>
+        <a href="\addpost" class="btn"><i class="fas fa-4x fa-plus-square text-success" ></i></i></a>
+    {% endif %}
+{% endblock %}

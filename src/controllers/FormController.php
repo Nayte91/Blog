@@ -2,6 +2,7 @@
 
 namespace P5blog\controllers;
 
+use P5blog\models\Comment;
 use P5blog\models\User;
 use P5blog\models\Post;
 
@@ -33,6 +34,15 @@ final class FormController extends AbstractController
             case "updatePost":
                 $this->updatePost($form);
                 break;
+            case "addComment":
+                $this->addComment($form);
+                break;
+            case "deleteComment":
+                $this->deleteComment($form);
+                break;
+            case "updateComment":
+                $this->updateComment($form);
+                break;
             case "contact":
                 $this->contact($form);
                 break;
@@ -41,27 +51,32 @@ final class FormController extends AbstractController
         }
     }
 
-    public function login(array $form): void
+    private function login(array $form): void
     {
         if (empty($form['name']) || !isset($form['name']) || empty($form['password']) || !isset($form['password']))
             throw new \Exception("bien joué le formulaire vide");
 
-        $user = User::retrieveFromName($form);
+        try {
+            $user = User::retrieveFromName($form);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
 
         if (!isset($user) || !$user->verifyPassword($form['password']))
             throw new \Exception("identifiants invalides");
 
         $_SESSION = $user->getAll();
+
         $this->message = "Connexion réussie";
     }
 
-    public function logout(): void
+    private function logout(): void
     {
         $_SESSION = [];
         $this->message = "Vous êtes déconnecté";
     }
 
-    public function signin(array $form): void
+    private function signin(array $form): void
     {
         if (array_search("", $form))
             throw new \Exception("bien joué le formulaire vide");
@@ -72,7 +87,7 @@ final class FormController extends AbstractController
         $this->message = "Compte créé, connectez-vous";
     }
 
-    public function signout(): void
+    private function signout(): void
     {
         if (!array_key_exists("id", $_SESSION) || !$_SESSION['id'])
             throw new \Exception("Petit coquinou");
@@ -88,7 +103,7 @@ final class FormController extends AbstractController
      * @param array $form -> 'form', 'title', 'heading', 'content', 'id', 'admin'
      * @throws \Exception
      */
-    public function addPost(array $form): void
+    private function addPost(array $form): void
     {
         $form['author'] = $form['id'];
         unset($form['id']);
@@ -105,7 +120,7 @@ final class FormController extends AbstractController
         $this->message = "Billet bien ajouté !";
     }
 
-    public function deletePost(array $form): void
+    private function deletePost(array $form): void
     {
         if(!Post::deleteFromId($form['postid']))
             throw new \Exception("Impossible de supprimer ce billet...");
@@ -117,7 +132,7 @@ final class FormController extends AbstractController
      * @param array $form -> 'form', 'postId', 'userId', 'title', 'heading', 'content', 'admin'
      * @throws \Exception
      */
-    public function updatePost(array $form): void
+    private function updatePost(array $form): void
     {
         $form['id'] = $form['postid'];
         unset($form['postid']);
@@ -134,8 +149,48 @@ final class FormController extends AbstractController
         $this->message = "Billet modifié";
     }
 
-    public function contact($form): void
+    private function contact(array $form): void
     {
+        // Check for empty fields
+        if(empty(['name'])  		||
+            empty($form['email']) 		||
+            empty($form['message'])	||
+            !filter_var($form['email'],FILTER_VALIDATE_EMAIL))
+        {
+            throw new \Exception("On envoie du vide ?");
+        }
 
+        $name = strip_tags(htmlspecialchars($form['name']));
+        $email_address = strip_tags(htmlspecialchars($form['email']));
+        $message = strip_tags(htmlspecialchars($form['message']));
+
+        // Create the email and send the message
+        $to = 'robic.julien@free.fr'; // Add your email address inbetween the '' replacing yourname@yourdomain.com - This is where the form will send a message to.
+        $email_subject = "Message par le blog:  $name";
+        $email_body = "Vous avez reçu un message par le formulaire de votre blog.\n\n"."Voici les détails:\n\nNon: $name\n\nEmail: $email_address\n\nMessage:\n$message";
+        $headers = "From: noreply@yourdomain.com\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
+        $headers .= "Reply-To: $email_address";
+
+        if (!mail($to,$email_subject,$email_body,$headers))
+            throw new \Exception("Pas de serveur mail configuré");
+
+        $this->message = "Message envoyé !";
+    }
+
+    private function addComment(array $form)
+    {
+        if(empty($form['content']))
+            throw new \Exception("On envoie du vide ?");
+
+        Comment::createOne($form);
+        $this->message = "Votre commentaire est enregistré et soumis à validation";
+    }
+
+    private function updateComment(array $form)
+    {
+    }
+
+    private function deleteComment(array $form)
+    {
     }
 }

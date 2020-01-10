@@ -4,7 +4,52 @@
 
 {% block main %}
     <h1>{{ post.title }}</h1>
-    <strong>Ecrit par {{ post.author }} le {{ post.creationdate }}</strong>
     <h4><i>{{ post.heading }}</i></h4>
     {{ post.content | raw }}
+    <p align="right"><i>Ecrit par <strong>{{ post.author }}</strong>, le <strong>{{ post.modificationdate }}</strong></i></p>
+    <hr />
+    <h4>Commentaires</h4>
+    {% if post.comments > 0 %}
+        {% for comment in comments %}
+            <h5>{{ comment.name }}</h5>
+            <p>{{ comment.content }}</p>
+        {% endfor %}
+    {% else %}
+       <p>Il n'y a pas encore de commentaires.</p>
+    {% endif %}
+    {% if user.name %}
+        <a href="#contact" data-toggle="modal" data-target="#comment">
+            <p class="text-success">Pour laisser un commentaire, cliquez ici !</p>
+        </a>
+    {% else %}
+        <p class="text-warning">Envie de laisser un commentaire ? Connectez-vous ou créez un compte !</p>
+    {% endif %}
+{% endblock %}
+
+{% block modal %}
+    {% if user.name %}
+        <div class="modal fade" id="comment" tabindex="-1" role="dialog" aria-labelledby="comment" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Commentaire de {{ user.name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="\post?id={{ post.id }}" method="post">
+                        <div class="modal-body">
+                            <label for="content">Votre commentaire</label>
+                            <textarea class="form-control" name="content"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="postid" value="{{ post.id }}">
+                            <input type="hidden" name="userid" value="{{ user.id }}">
+                            <button type=submit class="btn btn-primary" name="form" value="addComment">Envoyer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

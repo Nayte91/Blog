@@ -1,2 +1,4 @@
-assets/item/**
 config.php
+.idea/
+vendor/
+composer.lock

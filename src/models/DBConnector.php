@@ -6,14 +6,14 @@ trait DBConnector
 {
     protected static function dbconnect(): \PDO
     {
-        Require './config.php';
+        Require './../config.php';
 
         try
         {
             return new \PDO($dsn, $login,  $pass);
         }
 
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             die('Erreur : '.$e->getMessage());
         }

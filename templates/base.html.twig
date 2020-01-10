@@ -8,12 +8,12 @@
     <title>{% block title %}{% endblock %} {% if user.name %} - {{user.name}}{% endif %}</title>
     {% block headscript %}{% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <script src="https://kit.fontawesome.com/4ef10fbce3.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <link rel="icon" type="image/png" href="assets/img/anagraph32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="img/anagraph32.png" sizes="32x32">
 </head>
 
 <body>
@@ -21,10 +21,11 @@
         <a href="\">
             <h3 {% if 'current_route' %}id="active"{% endif %}>Julien Robic</h3>
         </a>
-
+        {% block menu %}
         <nav>
             <a href="{{ app.request.getBaseURL() }}\blog"><h5>BLOG</h5></a>
         </nav>
+        {% endblock %}
         {% include 'user.html.twig' %}
         {% block login %}{% endblock %}
     </header>
@@ -50,21 +51,25 @@
     </section>
 
     <footer>
-        <div class="align-middle">Contactez moi</div>
+        <div class="align-middle">
+            <a href="#contact" data-toggle="modal" data-target="#contact">
+                <i class="far fa-envelope"> Contactez moi</i>
+            </a>
+        </div>
         <div class="text-center">
             <div>Retrouvez moi sur :</div>
             <ul class="list-inline fa-ul mb-0 align-middle">
                 <li class="list-inline-item fa-li">
-                    <a href="#" class="btn"><i class="fab fa-fw fa-facebook"></i></a>
+                    <a href="https://www.facebook.com/Nayte91" class="btn"><i class="fab fa-fw fa-facebook"></i></a>
                 </li>
                 <li class="list-inline-item fa-li">
-                    <a href="#" class="btn"><i class="fab fa-fw fa-github"></i></i></a>
+                    <a href="https://github.com/Nayte91" class="btn"><i class="fab fa-fw fa-github"></i></i></a>
                 </li>
                 <li class="list-inline-item fa-li">
-                    <a href="#" class="btn"><i class="fab fa-fw fa-linkedin"></i></a>
+                    <a href="https://www.linkedin.com/in/julien-robic-b6a895178" class="btn"><i class="fab fa-fw fa-linkedin"></i></a>
                 </li>
                 <li class="list-inline-item fa-li">
-                    <a href="#" class="btn"><i class="fab fa-fw fa-twitter"></i></a>
+                    <a href="https://www.twitter.com/Nayte91" class="btn"><i class="fab fa-fw fa-twitter"></i></a>
                 </li>
             </ul>
         </div>
@@ -72,6 +77,31 @@
     </footer>
 
 {% block modal %}{% endblock %}
+    <div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="contact" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Contactez-moi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/" method="post">
+                    <div class="modal-body">
+                        <label for="name">Votre nom</label>
+                        <input class="form-control" name="name" type="text" />
+                        <label for="email">Votre adresse mail</label>
+                        <input class="form-control" name="email" type="email" />
+                        <label for="message">Votre message</label>
+                        <textarea class="form-control" name="message"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type=submit class="btn btn-primary" id="form" name="form" value="contact">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% block endscript %}{% endblock %}
 </body>
 </html>
