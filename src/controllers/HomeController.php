@@ -6,7 +6,7 @@ use P5blog\models\Post;
 
 final class HomeController extends AbstractController
 {
-    public function viewHome(?array $message): void
+    public function viewHome(?array $session, ?array $message): void
     {
         $posts = Post::retrieveLatest(5);
 
@@ -19,24 +19,13 @@ final class HomeController extends AbstractController
             ['name' => 'Eve'],
         ];
 
-        echo $this->twig->render('home.html.twig', ['posts' => $posts, 'foo' => $foo, 'user' => $_SESSION, 'message' => $message]);
+        echo $this->twig->render('home.html.twig', ['posts' => $posts, 'foo' => $foo, 'user' => $session, 'message' => $message]);
     }
-    /*
-    public function viewContact()
+
+    public function viewAdmin(?array $session, ?array $message): void
     {
-        $name = NULL;
+        $comments = Comment::retrieveAwaiting();
 
-        if (!empty($_POST['name']))
-        {
-            setcookie('user', $_POST['name']);
-        }
-
-        if (!empty($_COOKIE['user']))
-        {
-            $name = $_COOKIE['user'];
-        }
-
-        echo $twig->render('contact.html.twig', ['name' => $name]);
+        echo $this->twig->render('admin.html.twig', ['user' => $session, 'message' => $message, 'comments' => $comments]);
     }
-    */
 }

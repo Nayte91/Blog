@@ -11,8 +11,9 @@ final class Comment extends AbstractEntity
     public int $id;
     public int $postid;
     public int $userid;
+    public string $author;
     public string $content;
-    public string $modificationdate;
+    public \DateTime $modificationdate;
 
     /**
      * Retrieve valid comments related to a blog post, stocked in database.
@@ -30,6 +31,26 @@ final class Comment extends AbstractEntity
         $response = $query->fetchAll(\PDO::FETCH_ASSOC);
 
         return $response;
+    }
+
+    /**
+     * Retrieve all awaiting validation comments, stocked in database.
+     * @return array of comments.
+     */
+    public static function retrieveAwaiting(): array
+    {
+        $db = self::dbconnect();
+
+        $query = $db->prepare("SELECT comment.id, comment.modification_date AS modificationdate, comment.content, user.name AS author, post.id AS postid, user.id AS userid FROM comment LEFT JOIN post ON comment.post_id = post.id LEFT JOIN user ON comment.user_id = user.id WHERE valid = 0 ORDER BY modificationdate DESC");
+
+        $query->execute();
+
+        foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row){
+            $comments[] = new self($row);
+        }
+
+        unset($db);
+        return $comments;
     }
 
     /**
@@ -134,7 +155,7 @@ final class Comment extends AbstractEntity
 
     public function setModificationdate(string $modificationdate): void
     {
-        $this->modificationdate = $modificationdate;
+        $this->modificationdate = new \DateTime($modificationdate);
     }
 
     public function setContent(string $content): void
@@ -145,6 +166,11 @@ final class Comment extends AbstractEntity
     public function setUserid(string $userid): void
     {
         $this->userid = $userid;
+    }
+
+    public function setAuthor(string $author): void
+    {
+        $this->author = $author;
     }
 
     public function setPostid(int $postid):void
@@ -164,6 +190,6 @@ final class Comment extends AbstractEntity
 
     public function getModificationdate(): string
     {
-        return $this->modificationdate;
+        return $this->modificationdate->format("%W, %e %M %Y");
     }
 }

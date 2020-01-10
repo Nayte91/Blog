@@ -2,8 +2,8 @@
 
 namespace P5blog\controllers;
 
-use P5blog\models\Post;
-use P5blog\models\User;
+use Twig\Loader\FilesystemLoader;
+use Twig\Environment;
 
 abstract class AbstractController
 {
@@ -14,8 +14,8 @@ abstract class AbstractController
 
     public function __construct()
     {
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $this->twig = new \Twig\Environment($loader, ['cache' => false]);
+        $loader = new FilesystemLoader('../templates');
+        $this->twig = new Environment($loader, ['cache' => false]);
     }
 
     public function getMessage(): ?string

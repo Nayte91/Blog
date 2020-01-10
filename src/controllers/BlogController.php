@@ -11,7 +11,7 @@ final class BlogController extends AbstractController
     {
         $posts = Post::retrieveLatest();
 
-        foreach ($posts as $key => &$post) {
+        foreach ($posts as &$post) {
             $post['comments'] = Comment::countFromPost($post['id']);
         }
 

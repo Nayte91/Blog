@@ -5,13 +5,10 @@ namespace P5blog;
 use P5blog\controllers\HomeController;
 use P5blog\controllers\FormController;
 use P5blog\controllers\BlogController;
+use P5blog\controllers\AdminController;
 
 class Router
 {
-    private HomeController $hc;
-    private FormController $fc;
-    private BlogController $bc;
-
     private string $path;
     private array $post;
     private array $get;
@@ -23,10 +20,6 @@ class Router
     {
         if (session_status() === PHP_SESSION_NONE)
             session_start();
-
-        $this->hc = new HomeController;
-        $this->fc = new FormController;
-        $this->bc = new BlogController;
 
         $this->path = ltrim($_SERVER['REQUEST_URI'], '/');
         $this->post = $_POST;
@@ -44,11 +37,12 @@ class Router
         if (array_key_exists('admin', $this->session))
             $this->post['admin'] = $this->session['admin'];
 
-        //Si le $_POST est rempli, lancer le form controller
+        //Si c'est une requête POST, lancer le form controller
         if ($this->server["REQUEST_METHOD"] == "POST"){
+            $fc = new FormController();
             try {
-                $this->fc->dispatch($this->post);
-                $this->message['content'] = $this->fc->getMessage();
+                $fc->dispatch($this->post);
+                $this->message['content'] = $fc->getMessage();
                 $this->message['type'] = "success";
             } catch (\Exception $e) {
                 $this->message['content'] = $e->getmessage();
@@ -58,19 +52,28 @@ class Router
 
         switch(parse_url($this->path, PHP_URL_PATH)) {
             case '':
-                $this->hc->viewHome($this->session, $this->message);
+                $hc = new HomeController();
+                $hc->viewHome($this->session, $this->message);
+                break;
+            case 'admin':
+                $hc = new AdminController();
+                $hc->viewAdmin($this->session, $this->message);
                 break;
             case 'blog':
-                $this->bc->viewIndex($this->session, $this->message);
+                $bc = new BlogController();
+                $bc->viewIndex($this->session, $this->message);
                 break;
             case 'addpost':
-                $this->bc->addPost($this->session, $this->message);
+                $bc = new BlogController();
+                $bc->addPost($this->session, $this->message);
                 break;
             case 'post':
-                $this->bc->viewPost($this->get['id'], $this->session, $this->message);
+                $bc = new BlogController();
+                $bc->viewPost($this->get['id'], $this->session, $this->message);
                 break;
             case 'updatepost':
-                $this->bc->updatePost($this->get['id'], $this->session);
+                $bc = new BlogController();
+                $bc->updatePost($this->get['id'], $this->session);
                 break;
             default:
                 header('HTTP/1.1 404 Not Found');
