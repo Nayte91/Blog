@@ -12,7 +12,6 @@ class Router
     private string $path;
     private array $post;
     private array $get;
-    private array $session;
     private array $server;
     private array $message = [];
 
@@ -25,58 +24,57 @@ class Router
         $this->post = $_POST;
         $this->get = $_GET;
         $this->server = $_SERVER;
-        if (isset($_SESSION))
-            $this->session = $_SESSION;
     }
 
     public function start()
     {
-        if (array_key_exists('id', $this->session))
-            $this->post['id'] = $this->session['id'];
+        if (isset($_SESSION)){
+            if (array_key_exists('id', $_SESSION))
+                $this->post['id'] = $_SESSION['id'];
 
-        if (array_key_exists('admin', $this->session))
-            $this->post['admin'] = $this->session['admin'];
+            if (array_key_exists('admin', $_SESSION))
+                $this->post['admin'] = $_SESSION['admin'];
+        }
 
         //Si c'est une requête POST, lancer le form controller
         if ($this->server["REQUEST_METHOD"] == "POST"){
             $fc = new FormController();
             try {
                 $fc->dispatch($this->post);
-                $this->message['content'] = $fc->getMessage();
-                $this->message['type'] = "success";
+                $_SESSION['message_content'] = $fc->message;
+                $_SESSION['message_type'] = "success";
             } catch (\Exception $e) {
-                $this->message['content'] = $e->getmessage();
-                $this->message['type'] = "error";
+                $_SESSION['message_content'] = $e->getmessage();
+                $_SESSION['message_type'] = "error";
             }
         }
 
-        switch(parse_url($this->path, PHP_URL_PATH)) {
+        //Virer le "/" de fin d'url si il y en a un
+        if (substr($this->path, -1) == "/")
+            substr($this->path, 0, -1);
+
+        $rootpath = explode('/', parse_url($this->path, PHP_URL_PATH), 2);
+	
+	if (count($rootpath) == 1){
+		$suiteurl = '';
+	} else {
+		$suiteurl = $rootpath[1];
+	}
+
+        switch($rootpath[0]) {
             case '':
                 $hc = new HomeController();
-                $hc->viewHome($this->session, $this->message);
+                $hc->viewHome();
                 break;
             case 'admin':
-                $hc = new AdminController();
-                $hc->viewAdmin($this->session, $this->message);
+                $hc = new AdminController($suiteurl);
                 break;
             case 'blog':
-                $bc = new BlogController();
-                $bc->viewIndex($this->session, $this->message);
+                $bc = new BlogController($suiteurl);
+                //$bc = new BlogController();
+                //$bc->viewIndex();
                 break;
-            case 'addpost':
-                $bc = new BlogController();
-                $bc->addPost($this->session, $this->message);
-                break;
-            case 'post':
-                $bc = new BlogController();
-                $bc->viewPost($this->get['id'], $this->session, $this->message);
-                break;
-            case 'updatepost':
-                $bc = new BlogController();
-                $bc->updatePost($this->get['id'], $this->session);
-                break;
-            default:
-                header('HTTP/1.1 404 Not Found');
+
         }
     }
 }

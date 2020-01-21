@@ -8,6 +8,8 @@ use P5blog\models\Post;
 
 final class FormController extends AbstractController
 {
+    public string $message;
+
     public function dispatch(array $form): void
     {
         //Vérifier le POST de login

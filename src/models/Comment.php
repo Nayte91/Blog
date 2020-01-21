@@ -40,7 +40,6 @@ final class Comment extends AbstractEntity
     public static function retrieveAwaiting(): array
     {
         $db = self::dbconnect();
-
         $query = $db->prepare("SELECT comment.id, comment.modification_date AS modificationdate, comment.content, user.name AS author, post.id AS postid, user.id AS userid FROM comment LEFT JOIN post ON comment.post_id = post.id LEFT JOIN user ON comment.user_id = user.id WHERE valid = 0 ORDER BY modificationdate DESC");
 
         $query->execute();
