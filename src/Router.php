@@ -24,6 +24,8 @@ class Router
         $this->post = $_POST;
         $this->get = $_GET;
         $this->server = $_SERVER;
+	$_SESSION['message_content'] = '';
+        $_SESSION['message_type'] = '';
     }
 
     public function start()
@@ -37,7 +39,7 @@ class Router
         }
 
         //Si c'est une requête POST, lancer le form controller
-        if ($this->server["REQUEST_METHOD"] == "POST"){
+        if ($this->server["REQUEST_METHOD"] != "GET"){
             $fc = new FormController();
             try {
                 $fc->dispatch($this->post);
@@ -48,33 +50,40 @@ class Router
                 $_SESSION['message_type'] = "error";
             }
         }
+		
+	try {
+		$controller = $this->customController();
+	} catch (\Exception $e) {
+		$_SESSION['message_content'] = $e->getmessage();
+                $_SESSION['message_type'] = "error";
+		$controller = new HomeController();
+	}
+    }
 
+    private function customController()
+    {
         //Virer le "/" de fin d'url si il y en a un
         if (substr($this->path, -1) == "/")
             substr($this->path, 0, -1);
 
-        $rootpath = explode('/', parse_url($this->path, PHP_URL_PATH), 2);
-	
-	if (count($rootpath) == 1){
-		$suiteurl = '';
+        $explodedpath = explode('/', parse_url($this->path, PHP_URL_PATH), 2);
+	$rootpath = $explodedpath[0];	
+
+	if (count($explodedpath) == 1) {
+		$this->path = '';
 	} else {
-		$suiteurl = $rootpath[1];
+		$this->path = $explodedpath[1];
+	}	
+
+	$classname = "P5blog\\controllers\\" . ucfirst($rootpath) . "Controller";
+
+	if ($rootpath == ''){
+		return new HomeController;
 	}
 
-        switch($rootpath[0]) {
-            case '':
-                $hc = new HomeController();
-                $hc->viewHome();
-                break;
-            case 'admin':
-                $hc = new AdminController($suiteurl);
-                break;
-            case 'blog':
-                $bc = new BlogController($suiteurl);
-                //$bc = new BlogController();
-                //$bc->viewIndex();
-                break;
+	if (!class_exists($classname))
+		throw new \Exception("C'est pas le bon site là");
 
-        }
+	return new $classname($this->path);
     }
 }

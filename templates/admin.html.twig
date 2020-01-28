@@ -16,14 +16,18 @@
 
     <article>
         <h2> Liste des commentaires en attente de validation</h2>
+	{% if comments %}
         <ul>
             {% for comment in comments %}
                 <li>{{ comment.modificationdate|date('Y-m-d H:i:s') }} - <i>{{ comment.content }}</i> - par {{ comment.author }} (#{{ comment.userid }})
-                    <a href="/post?id={{ comment.postid }}">dans ce billet</a>
-                    <a href=""><button class="btn btn-success">Valider</button></a>
+                    <a href="blog/post/{{ comment.postid }}">dans ce billet</a>
+                    <a href="/admin/validate/{{ comment.id }}"><button class="btn btn-success">Valider</button></a>
                     <a href="/admin/delete/{{ comment.id }}"><button class="btn btn-danger">Supprimer</button></a>
                 </li>
             {% endfor %}
         </ul>
+	{% else %}
+	<p>Il n'y a pas de commentaires en attente de validation.</p>
+	{% endif %}
     </article>
 {% endblock %}

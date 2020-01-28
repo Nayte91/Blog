@@ -179,7 +179,7 @@ final class FormController extends AbstractController
         $this->message = "Message envoyé !";
     }
 
-    private function addComment(array $form)
+    private function addComment(array $form): void
     {
         if(empty($form['content']))
             throw new \Exception("On envoie du vide ?");

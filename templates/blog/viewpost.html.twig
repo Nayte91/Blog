@@ -1,6 +1,10 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Consultation billet - {% endblock %}
+{% block title %}Consultation billet {% endblock %}
+
+{% block headscript %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+{% endblock %}
 
 {% block main %}
     <h1>{{ post.title }}</h1>
@@ -26,18 +30,25 @@
     {% endif %}
 {% endblock %}
 
+{% block section %}
+    {%if user.admin %}
+        <h5>Editer ce billet</h5>
+        <a href="\blog\edit\{{ post.id }}" class="btn"><i class="fas fa-4x fa-edit text-success" ></i></a>
+    {% endif %}
+{% endblock %}
+
 {% block modal %}
     {% if user.name %}
         <div class="modal fade" id="comment" tabindex="-1" role="dialog" aria-labelledby="comment" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Commentaire de {{ user.name }}</h5>
+                        <h5 class="modal-title">Nouveau commentaire de {{ user.name }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="\post?id={{ post.id }}" method="post">
+                    <form action="\blog" method="post">
                         <div class="modal-body">
                             <label for="content">Votre commentaire</label>
                             <textarea class="form-control" name="content"></textarea>
@@ -52,4 +63,19 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block endscript %}
+<script>
+    document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+        // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
+        // to discover the media.
+        const anchor = document.createElement( 'a' );
+
+        anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
+        anchor.className = 'embedly-card';
+
+        element.appendChild( anchor );
+    } );
+</script>
 {% endblock %}

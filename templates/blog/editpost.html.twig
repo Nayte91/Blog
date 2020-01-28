@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {% if post %}
+    	Edition
+    {% else %}
+    	Nouveau billet
+    {% endif %}
+{% endblock %}
+
+{% block headscript %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+{% endblock %}
+
+{% block main %}
+    {% if post %}
+    	<h1>Editer ce billet (#{{ post.id }})</h1>
+    {% else %}
+    	<h1>Ajouter un billet de blog</h1>
+    {% endif %}
+    <form action="\blog" method="post" class="form-group">
+        <label for="title">Titre</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Titre du billet" value="{{ post.title }}" required>
+        <label for="chapo">Résumé</label>
+        <input type="text" name="heading" id="chapo" class="form-control" placeholder="1er paragraphe" value="{{ post.heading }}" required>
+        <label for="content">Texte</label>
+        <textarea name="content" class="form-control" id="editor" placeholder="Entrez votre contenu">{{ post.content | raw }}</textarea><br />
+    {% if post %}
+	<input type="hidden" name="postid" value="{{ post.id }}">
+        <button type="submit" value="updatePost" class="btn btn-success" name="form"><i>Mettre à jour</i></button>
+    {% else %}
+    	<button type="submit" value="addpost" class="btn btn-success" name="form">Ajouter</button>
+    {% endif %}
+    </form>
+{% endblock %}
+
+{% block section %}
+    {%if post %}
+        <h5>Supprimer le billet</h5>
+	<form action="\blog" method="post" class="form-group">
+	<input type="hidden" name="postid" value="{{ post.id }}">
+        <button type="submit" id="form" name="form" value="deletePost"><i class="fas fa-4x fa-minus text-danger" ></i></button>
+	</form>
+    {% endif %}
+{% endblock %}
+
+{% block endscript %}
+    <script src="/js/ckeditor.js"></script>
+{% endblock %}

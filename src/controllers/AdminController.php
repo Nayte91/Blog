@@ -7,7 +7,7 @@ use P5blog\models\Comment;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-final class AdminController
+final class AdminController extends AbstractController
 {
     public function __construct(string $path)
     {
@@ -15,22 +15,34 @@ final class AdminController
             $this->viewError();
             return;
         }
-	
-	//if (!array_key_exists('1', explode('/', parse_url($path, PHP_URL_PATH), 2))){
-	
-	//$second = explode('/', parse_url($path, PHP_URL_PATH), 2)[1];
 
-        switch($path) {
+	$explodedpath = explode('/', parse_url($path, PHP_URL_PATH), 2);
+	$action = $explodedpath[0];	
+	
+	if (count($explodedpath) == 1) {
+		$number = '';
+	} else {
+		$number = $explodedpath[1];
+	}	
+	var_dump($action);
+
+        switch($action) {
             case '':
                 $this->viewAdmin();
                 break;
+	    case 'validate':
+		$this->validateComment((int)$number);
+		break;
+	    case 'delete':
+		$this->deleteComment((int)$number);
+		break;
             default:
 		$this->viewError();
                 break;
         }
     }
 
-    private function viewAdmin(): void
+    private function viewAdmin()
     {
         $comments = Comment::retrieveAwaiting();
 
@@ -43,22 +55,22 @@ final class AdminController
             ]);
     }
 
-    public function deleteComment(?string $path, ?array $message, $commentid): void
+    private function validateComment(int $id): void
     {
-        if ($session['admin'] != 1) {
-            echo $this->twig->render('Exception/error.html.twig');
-            return;
-        }
+	Comment::validateOne($id);
 
-        $this->viewAdmin($path);
+        header("Location: /admin");
     }
 
-    private function validateComment(): void
+    private function deleteComment(int $id): void
     {
+	
+	Comment::deleteOne($id);
 
+	header("Location: /admin");
     }
 
-    private function viewError():void
+    private function viewError()
     {
         $loader = new FilesystemLoader('../templates');
         $twig = new Environment($loader, ['cache' => false]);
