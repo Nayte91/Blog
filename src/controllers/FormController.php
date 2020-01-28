@@ -8,6 +8,8 @@ use P5blog\models\Post;
 
 final class FormController extends AbstractController
 {
+    public string $message;
+
     public function dispatch(array $form): void
     {
         //Vérifier le POST de login
@@ -177,7 +179,7 @@ final class FormController extends AbstractController
         $this->message = "Message envoyé !";
     }
 
-    private function addComment(array $form)
+    private function addComment(array $form): void
     {
         if(empty($form['content']))
             throw new \Exception("On envoie du vide ?");

@@ -12,7 +12,6 @@ class Router
     private string $path;
     private array $post;
     private array $get;
-    private array $session;
     private array $server;
     private array $message = [];
 
@@ -25,58 +24,66 @@ class Router
         $this->post = $_POST;
         $this->get = $_GET;
         $this->server = $_SERVER;
-        if (isset($_SESSION))
-            $this->session = $_SESSION;
+	$_SESSION['message_content'] = '';
+        $_SESSION['message_type'] = '';
     }
 
     public function start()
     {
-        if (array_key_exists('id', $this->session))
-            $this->post['id'] = $this->session['id'];
+        if (isset($_SESSION)){
+            if (array_key_exists('id', $_SESSION))
+                $this->post['id'] = $_SESSION['id'];
 
-        if (array_key_exists('admin', $this->session))
-            $this->post['admin'] = $this->session['admin'];
+            if (array_key_exists('admin', $_SESSION))
+                $this->post['admin'] = $_SESSION['admin'];
+        }
 
         //Si c'est une requête POST, lancer le form controller
-        if ($this->server["REQUEST_METHOD"] == "POST"){
+        if ($this->server["REQUEST_METHOD"] != "GET"){
             $fc = new FormController();
             try {
                 $fc->dispatch($this->post);
-                $this->message['content'] = $fc->getMessage();
-                $this->message['type'] = "success";
+                $_SESSION['message_content'] = $fc->message;
+                $_SESSION['message_type'] = "success";
             } catch (\Exception $e) {
-                $this->message['content'] = $e->getmessage();
-                $this->message['type'] = "error";
+                $_SESSION['message_content'] = $e->getmessage();
+                $_SESSION['message_type'] = "error";
             }
         }
+		
+	try {
+		$controller = $this->customController();
+	} catch (\Exception $e) {
+		$_SESSION['message_content'] = $e->getmessage();
+                $_SESSION['message_type'] = "error";
+		$controller = new HomeController();
+	}
+    }
 
-        switch(parse_url($this->path, PHP_URL_PATH)) {
-            case '':
-                $hc = new HomeController();
-                $hc->viewHome($this->session, $this->message);
-                break;
-            case 'admin':
-                $hc = new AdminController();
-                $hc->viewAdmin($this->session, $this->message);
-                break;
-            case 'blog':
-                $bc = new BlogController();
-                $bc->viewIndex($this->session, $this->message);
-                break;
-            case 'addpost':
-                $bc = new BlogController();
-                $bc->addPost($this->session, $this->message);
-                break;
-            case 'post':
-                $bc = new BlogController();
-                $bc->viewPost($this->get['id'], $this->session, $this->message);
-                break;
-            case 'updatepost':
-                $bc = new BlogController();
-                $bc->updatePost($this->get['id'], $this->session);
-                break;
-            default:
-                header('HTTP/1.1 404 Not Found');
-        }
+    private function customController()
+    {
+        //Virer le "/" de fin d'url si il y en a un
+        if (substr($this->path, -1) == "/")
+            substr($this->path, 0, -1);
+
+        $explodedpath = explode('/', parse_url($this->path, PHP_URL_PATH), 2);
+	$rootpath = $explodedpath[0];	
+
+	if (count($explodedpath) == 1) {
+		$this->path = '';
+	} else {
+		$this->path = $explodedpath[1];
+	}	
+
+	$classname = "P5blog\\controllers\\" . ucfirst($rootpath) . "Controller";
+
+	if ($rootpath == ''){
+		return new HomeController;
+	}
+
+	if (!class_exists($classname))
+		throw new \Exception("C'est pas le bon site là");
+
+	return new $classname($this->path);
     }
 }

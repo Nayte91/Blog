@@ -3,10 +3,12 @@
 namespace P5blog\controllers;
 
 use P5blog\models\Post;
+use Twig\Loader\FilesystemLoader;
+use Twig\Environment;
 
 final class HomeController extends AbstractController
 {
-    public function viewHome(?array $session, ?array $message): void
+    public function __construct()
     {
         $posts = Post::retrieveLatest(5);
 
@@ -19,13 +21,8 @@ final class HomeController extends AbstractController
             ['name' => 'Eve'],
         ];
 
-        echo $this->twig->render('home.html.twig', ['posts' => $posts, 'foo' => $foo, 'user' => $session, 'message' => $message]);
-    }
-
-    public function viewAdmin(?array $session, ?array $message): void
-    {
-        $comments = Comment::retrieveAwaiting();
-
-        echo $this->twig->render('admin.html.twig', ['user' => $session, 'message' => $message, 'comments' => $comments]);
+        $loader = new FilesystemLoader('../templates');
+        $twig = new Environment($loader, ['cache' => false]);
+        echo $twig->render('home.html.twig', ['posts' => $posts, 'foo' => $foo, 'user' => $_SESSION]);
     }
 }

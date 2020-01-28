@@ -40,11 +40,10 @@ final class Comment extends AbstractEntity
     public static function retrieveAwaiting(): array
     {
         $db = self::dbconnect();
-
         $query = $db->prepare("SELECT comment.id, comment.modification_date AS modificationdate, comment.content, user.name AS author, post.id AS postid, user.id AS userid FROM comment LEFT JOIN post ON comment.post_id = post.id LEFT JOIN user ON comment.user_id = user.id WHERE valid = 0 ORDER BY modificationdate DESC");
 
         $query->execute();
-
+	$comments = array();
         foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row){
             $comments[] = new self($row);
         }
@@ -62,7 +61,7 @@ final class Comment extends AbstractEntity
     {
         $db = self::dbconnect();
 
-        $query = $db->prepare('SELECT COUNT(*) as cnt FROM comment WHERE post_id = :postid');
+        $query = $db->prepare('SELECT COUNT(*) as cnt FROM comment WHERE post_id = :postid AND valid = 1');
         $query->bindValue(':postid', $postid, \PDO::PARAM_INT);
 
         $query->execute();
@@ -70,23 +69,6 @@ final class Comment extends AbstractEntity
 
         unset($db);
         return $response['cnt'];
-    }
-
-    /**
-     * Retrieve all comments not yet validated, stocked in database.
-     * @return array of comments properties.
-     */
-    public static function retrievePending(): array
-    {
-        $db = self::dbconnect();
-
-        $query = $db->prepare("SELECT comment.id, comment.title, DATE_FORMAT(comment.modification_date, \"%W, %e %M %Y\") as modificationdate, comment.content, comment.author FROM comment WHERE valid = 0 ORDER BY modification_date ");
-
-        $query->execute();
-        $response = $query->fetchAll(\PDO::FETCH_ASSOC);
-
-        unset($db);
-        return $response;
     }
 
     /**
@@ -124,26 +106,28 @@ final class Comment extends AbstractEntity
 
     /**
      * Delete this comment
+     * @param int $id --> comment id
      * @return bool states if record was successful or not.
      */
-    public function deleteOne(): bool
+    public function deleteOne(int $id): bool
     {
         $db = self::dbconnect();
         $query = $db->prepare('DELETE FROM comment WHERE id = :id');
-        $query->bindValue(':id', $this->id, \PDO::PARAM_INT);
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
 
         return $query->execute();
     }
 
     /**
      * Valid this comment
+     * @param int $id --> comment id
      * @return bool states if record was successful or not.
      */
-    public function validate(): bool
+    public function validateOne(int $id): bool
     {
         $db = self::dbconnect();
         $query = $db->prepare('UPDATE comment SET valid = 1 WHERE id = :id');
-        $query->bindValue(':id', $this->id, \PDO::PARAM_INT);
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
 
         return $query->execute();
     }

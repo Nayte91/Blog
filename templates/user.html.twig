@@ -32,7 +32,7 @@
                     </div>
                     <div class="modal-footer">
                     {%if user.admin %}
-                        <a class="btn btn-success" href="{{ app.request.getBaseURL() }}">Administration</a>
+                        <a class="btn btn-success" href="/admin">Administration</a>
                     {% endif %}
                         <button type=submit class="btn btn-danger" id="form" name="form" value="signout">Destruction</button>
                         <button type=submit class="btn btn-primary" id="form" name="form" value="logout">Déconnexion</button>
