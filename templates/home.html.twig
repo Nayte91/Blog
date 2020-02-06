@@ -24,7 +24,7 @@
     <h5>Les derniers billets :</h5>
     <ul>
         {% for post in posts %}
-            <li>{{ post.title }}</li>
+            <li><a href="\blog\post\{{ post.id }}">{{ post.title }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

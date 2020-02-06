@@ -13,8 +13,7 @@ final class FormController extends AbstractController
     public function dispatch(array $form): void
     {
         //Vérifier le POST de login
-        switch ($form['form'])
-        {
+        switch ($form['form']) {
             case "login":
                 $this->login($form);
                 break;
@@ -42,21 +41,28 @@ final class FormController extends AbstractController
             case "deleteComment":
                 $this->deleteComment($form);
                 break;
-            case "updateComment":
-                $this->updateComment($form);
+            case "validateComment":
+                $this->validateComment($form);
                 break;
             case "contact":
                 $this->contact($form);
                 break;
             default:
+		throw new \Exception("C'est quoi ce formulaire ?");
                 break;
         }
     }
 
     private function login(array $form): void
     {
-        if (empty($form['name']) || !isset($form['name']) || empty($form['password']) || !isset($form['password']))
+        if (
+	    empty($form['name'])
+	    || !isset($form['name'])
+	    || empty($form['password'])
+	    || !isset($form['password'])
+	) {
             throw new \Exception("bien joué le formulaire vide");
+	}
 
         try {
             $user = User::retrieveFromName($form);
@@ -64,8 +70,12 @@ final class FormController extends AbstractController
             throw new \Exception($e->getMessage());
         }
 
-        if (!isset($user) || !$user->verifyPassword($form['password']))
+        if (
+	    !isset($user) 
+	    || !$user->verifyPassword($form['password'])
+	) {
             throw new \Exception("identifiants invalides");
+	}
 
         $_SESSION = $user->getAll();
 
@@ -80,22 +90,29 @@ final class FormController extends AbstractController
 
     private function signin(array $form): void
     {
-        if (array_search("", $form))
+        if (array_search("", $form)) {
             throw new \Exception("bien joué le formulaire vide");
+	}
 
-        if(!User::createOne($form))
+        if (!User::createOne($form)) {
             throw new \Exception("Création ratée");
+	}
 
         $this->message = "Compte créé, connectez-vous";
     }
 
     private function signout(): void
     {
-        if (!array_key_exists("id", $_SESSION) || !$_SESSION['id'])
+        if (
+	    !array_key_exists("id", $_SESSION)
+	    || !$_SESSION['id']
+	) {
             throw new \Exception("Petit coquinou");
+	}
 
-        if(!User::deleteFromId($_SESSION['id']))
+        if (!User::deleteFromId($_SESSION['id'])) {
             throw new \Exception("Destruction ratée ?");
+	}
 
         $_SESSION = [];
         $this->message = "Compte détruit";
@@ -110,22 +127,26 @@ final class FormController extends AbstractController
         $form['author'] = $form['id'];
         unset($form['id']);
 
-        if (array_search("", $form))
+        if (array_search("", $form)) {
             throw new \Exception("bien joué le formulaire vide");
+	}
 
-        if ($form['admin'] != 1)
+        if ($form['admin'] != 1) {
             throw new \Exception("Pas admin, que fais tu là ?");
+	}
 
-        if(!Post::createOne($form))
+        if(!Post::createOne($form)) {
             throw new \Exception("Billet non ajouté");
+	}
 
         $this->message = "Billet bien ajouté !";
     }
 
     private function deletePost(array $form): void
     {
-        if(!Post::deleteFromId($form['postid']))
+        if(!Post::deleteFromId($form['postid'])) {
             throw new \Exception("Impossible de supprimer ce billet...");
+	}
 
         $this->message = "Billet détruit !";
     }
@@ -139,14 +160,17 @@ final class FormController extends AbstractController
         $form['id'] = $form['postid'];
         unset($form['postid']);
 
-        if (array_search("", $form))
+        if (array_search("", $form)) {
             throw new \Exception("bien joué le formulaire vide");
+	}
 
-        if ($form['admin'] != 1)
+        if ($form['admin'] != 1) {
             throw new \Exception("Pas admin, que fais tu là ?");
+	}
 
-        if(!Post::updateOne($form))
+        if(!Post::updateOne($form)) {
             throw new \Exception("Billet non modifié");
+	}
 
         $this->message = "Billet modifié";
     }
@@ -173,26 +197,30 @@ final class FormController extends AbstractController
         $headers = "From: noreply@yourdomain.com\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
         $headers .= "Reply-To: $email_address";
 
-        if (!mail($to,$email_subject,$email_body,$headers))
+        if (!mail($to,$email_subject,$email_body,$headers)) {
             throw new \Exception("Pas de serveur mail configuré");
+	}
 
         $this->message = "Message envoyé !";
     }
 
     private function addComment(array $form): void
     {
-        if(empty($form['content']))
+        if(empty($form['content'])) {
             throw new \Exception("On envoie du vide ?");
+	}
 
         Comment::createOne($form);
         $this->message = "Votre commentaire est enregistré et soumis à validation";
     }
 
-    private function updateComment(array $form)
+    private function validateComment(array $form): void
     {
+	$this->message = "Commentaire validé";	
     }
 
-    private function deleteComment(array $form)
+    private function deleteComment(array $form): void
     {
+	$this->message = "Commentaire détruit";
     }
 }

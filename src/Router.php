@@ -17,8 +17,9 @@ class Router
 
     public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE)
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
+	}
 
         $this->path = ltrim($_SERVER['REQUEST_URI'], '/');
         $this->post = $_POST;
@@ -30,16 +31,18 @@ class Router
 
     public function start()
     {
-        if (isset($_SESSION)){
-            if (array_key_exists('id', $_SESSION))
+        if (isset($_SESSION)) {
+            if (array_key_exists('id', $_SESSION)) {
                 $this->post['id'] = $_SESSION['id'];
+	    }
 
-            if (array_key_exists('admin', $_SESSION))
+            if (array_key_exists('admin', $_SESSION)) {
                 $this->post['admin'] = $_SESSION['admin'];
+	    }
         }
 
         //Si c'est une requête POST, lancer le form controller
-        if ($this->server["REQUEST_METHOD"] != "GET"){
+        if ($this->server["REQUEST_METHOD"] != "GET") {
             $fc = new FormController();
             try {
                 $fc->dispatch($this->post);
@@ -70,19 +73,20 @@ class Router
 	$rootpath = $explodedpath[0];	
 
 	if (count($explodedpath) == 1) {
-		$this->path = '';
+	    $this->path = '';
 	} else {
-		$this->path = $explodedpath[1];
+	    $this->path = $explodedpath[1];
 	}	
 
-	$classname = "P5blog\\controllers\\" . ucfirst($rootpath) . "Controller";
+	$classname = "P5blog\\controllers\\" . ucfirst(strtolower($rootpath)) . "Controller";
 
-	if ($rootpath == ''){
-		return new HomeController;
+	if ($rootpath == '') {
+	    return new HomeController;
 	}
 
-	if (!class_exists($classname))
-		throw new \Exception("C'est pas le bon site là");
+	if (!class_exists($classname)) {
+	    throw new \Exception("C'est pas le bon site là");
+	}
 
 	return new $classname($this->path);
     }

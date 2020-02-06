@@ -23,8 +23,7 @@ final class AdminController extends AbstractController
 		$number = '';
 	} else {
 		$number = $explodedpath[1];
-	}	
-	var_dump($action);
+	}
 
         switch($action) {
             case '':
@@ -59,7 +58,7 @@ final class AdminController extends AbstractController
     {
 	Comment::validateOne($id);
 
-        header("Location: /admin");
+	header("Location: /admin");
     }
 
     private function deleteComment(int $id): void
