@@ -2,4 +2,4 @@ config.php
 .idea/
 vendor/
 composer.lock
-.htaccess
+public/.htaccess

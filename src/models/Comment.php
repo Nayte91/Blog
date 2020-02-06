@@ -66,8 +66,12 @@ final class Comment extends AbstractEntity
 
         $query->execute();
         $response = $query->fetch(\PDO::FETCH_ASSOC);
-
         unset($db);
+
+        if (!$response) {
+            $response['cnt'] = 0;
+        }
+        
         return $response['cnt'];
     }
 
