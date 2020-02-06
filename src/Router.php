@@ -25,7 +25,7 @@ class Router
         $this->post = $_POST;
         $this->get = $_GET;
         $this->server = $_SERVER;
-	$_SESSION['message_content'] = '';
+	    $_SESSION['message_content'] = '';
         $_SESSION['message_type'] = '';
     }
 
@@ -34,11 +34,11 @@ class Router
         if (isset($_SESSION)) {
             if (array_key_exists('id', $_SESSION)) {
                 $this->post['id'] = $_SESSION['id'];
-	    }
+	        }
 
             if (array_key_exists('admin', $_SESSION)) {
                 $this->post['admin'] = $_SESSION['admin'];
-	    }
+	        }
         }
 
         //Si c'est une requête POST, lancer le form controller
@@ -66,9 +66,9 @@ class Router
     private function customController()
     {
         //Virer le "/" de fin d'url si il y en a un
-        if (substr($this->path, -1) == "/")
+        if (substr($this->path, -1) == "/") {
             substr($this->path, 0, -1);
-
+        }
         $explodedpath = explode('/', parse_url($this->path, PHP_URL_PATH), 2);
 	$rootpath = $explodedpath[0];	
 

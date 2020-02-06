@@ -3,8 +3,6 @@
 namespace P5blog\controllers;
 
 use P5blog\models\Post;
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment;
 
 final class HomeController extends AbstractController
 {
@@ -21,8 +19,6 @@ final class HomeController extends AbstractController
             ['name' => 'Eve'],
         ];
 
-        $loader = new FilesystemLoader('../templates');
-        $twig = new Environment($loader, ['cache' => false]);
-        echo $twig->render('home.html.twig', ['posts' => $posts, 'foo' => $foo, 'user' => $_SESSION]);
+        $this->render('home.html.twig', ['posts' => $posts, 'foo' => $foo]);
     }
 }

@@ -48,7 +48,7 @@ final class FormController extends AbstractController
                 $this->contact($form);
                 break;
             default:
-		throw new \Exception("C'est quoi ce formulaire ?");
+		        throw new \Exception("C'est quoi ce formulaire ?");
                 break;
         }
     }
@@ -104,15 +104,15 @@ final class FormController extends AbstractController
     private function signout(): void
     {
         if (
-	    !array_key_exists("id", $_SESSION)
-	    || !$_SESSION['id']
-	) {
+	        !array_key_exists("id", $_SESSION)
+	        || !$_SESSION['id']
+	    ) {
             throw new \Exception("Petit coquinou");
-	}
+	    }
 
         if (!User::deleteFromId($_SESSION['id'])) {
             throw new \Exception("Destruction ratée ?");
-	}
+	    }
 
         $_SESSION = [];
         $this->message = "Compte détruit";
@@ -129,24 +129,24 @@ final class FormController extends AbstractController
 
         if (array_search("", $form)) {
             throw new \Exception("bien joué le formulaire vide");
-	}
+	    }
 
         if ($form['admin'] != 1) {
             throw new \Exception("Pas admin, que fais tu là ?");
-	}
+	    }
 
         if(!Post::createOne($form)) {
             throw new \Exception("Billet non ajouté");
-	}
+	    }
 
         $this->message = "Billet bien ajouté !";
     }
 
     private function deletePost(array $form): void
     {
-        if(!Post::deleteFromId($form['postid'])) {
+        if (!Post::deleteFromId($form['postid'])) {
             throw new \Exception("Impossible de supprimer ce billet...");
-	}
+	    }
 
         $this->message = "Billet détruit !";
     }
@@ -162,15 +162,15 @@ final class FormController extends AbstractController
 
         if (array_search("", $form)) {
             throw new \Exception("bien joué le formulaire vide");
-	}
+	    }
 
         if ($form['admin'] != 1) {
             throw new \Exception("Pas admin, que fais tu là ?");
-	}
+	    }
 
-        if(!Post::updateOne($form)) {
+        if (!Post::updateOne($form)) {
             throw new \Exception("Billet non modifié");
-	}
+	    }
 
         $this->message = "Billet modifié";
     }
@@ -178,11 +178,12 @@ final class FormController extends AbstractController
     private function contact(array $form): void
     {
         // Check for empty fields
-        if(empty(['name'])  		||
-            empty($form['email']) 		||
-            empty($form['message'])	||
-            !filter_var($form['email'],FILTER_VALIDATE_EMAIL))
-        {
+        if (
+            empty(['name'])
+            || empty($form['email'])
+            || empty($form['message'])
+            || !filter_var($form['email'],FILTER_VALIDATE_EMAIL)
+        ) {
             throw new \Exception("On envoie du vide ?");
         }
 
@@ -199,28 +200,41 @@ final class FormController extends AbstractController
 
         if (!mail($to,$email_subject,$email_body,$headers)) {
             throw new \Exception("Pas de serveur mail configuré");
-	}
+	    }
 
         $this->message = "Message envoyé !";
     }
 
     private function addComment(array $form): void
     {
-        if(empty($form['content'])) {
+        if (empty($form['content'])) {
             throw new \Exception("On envoie du vide ?");
-	}
+	    }
 
         Comment::createOne($form);
+
         $this->message = "Votre commentaire est enregistré et soumis à validation";
     }
 
     private function validateComment(array $form): void
     {
-	$this->message = "Commentaire validé";	
+        if ($form['admin'] = 0) {
+            throw new \Exception("Pas admin, pas le droit !");
+        }
+
+        Comment::validateOne($form['commentid']);
+
+	    $this->message = "Commentaire validé";
     }
 
     private function deleteComment(array $form): void
     {
-	$this->message = "Commentaire détruit";
+        if ($form['admin'] = 0) {
+            throw new \Exception("Pas admin, pas le droit !");
+        }
+
+        Comment::deleteOne($form['commentid']);
+
+	    $this->message = "Commentaire détruit";
     }
 }

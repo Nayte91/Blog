@@ -18,39 +18,39 @@
         <h2> Liste des commentaires en attente de validation</h2>
 	{% if comments %}
         <table class="table">
-	    <thead>
-		<tr>
-		    <td scope="col">Date</td>
-		    <td scope="col">Auteur</td>
-		    <td scope="col">Texte</td>
-		    <td scope="col">Billet</td>
-		    <td scope="col">Valider</td>
-		    <td scope="col">Supprimer</td>
-		</tr>
-	    </thead>
-	    <tbody>
-            {% for comment in comments %}
-		<tr>
-            	    <td scope="row">{{ comment.modificationdate|date('Y-m-d H:i:s') }}</td>
-		    <td>{{ comment.author }}</td>
-		    <td>"<i>{{ comment.content }}</i>"</td>
-                    <td><a href="blog/post/{{ comment.postid }}"><i class="fas fa-link"></i></a></td>
-                    <td>
-			<form action="\admin" method="post">
-			    <input type="hidden" name="postid" value="{{ comment.id }}">
-        		    <button type="submit" value="validateComment" name="form"><i class="fas fa-check text-success"></i></button>
-			</form>
-		    </td>
-                    <td>
-			<form action="\admin" method="post">
-			    <input type="hidden" name="postid" value="{{ comment.id }}">
-        		    <button type="submit" value="deleteComment" name="form"><i class="fas fa-times text-danger"></i></button>
-			</form>
-		    </td>
-                </tr>
-            {% endfor %}
+			<thead>
+				<tr>
+					<td scope="col">Date</td>
+					<td scope="col">Auteur</td>
+					<td scope="col">Texte</td>
+					<td scope="col">Billet</td>
+					<td scope="col">Valider</td>
+					<td scope="col">Supprimer</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for comment in comments %}
+				<tr>
+					<td scope="row">{{ comment.modificationdate|date('Y-m-d H:i:s') }}</td>
+					<td>{{ comment.author }}</td>
+					<td>"<i>{{ comment.content }}</i>"</td>
+					<td><a href="blog/post/{{ comment.postid }}"><i class="fas fa-link"></i></a></td>
+					<td>
+						<form action="\admin" method="post">
+							<input type="hidden" name="commentid" value="{{ comment.id }}">
+							<button type="submit" value="validateComment" name="form"><i class="fas fa-check text-success"></i></button>
+						</form>
+					</td>
+					<td>
+						<form action="\admin" method="post">
+							<input type="hidden" name="commentid" value="{{ comment.id }}">
+							<button type="submit" value="deleteComment" name="form"><i class="fas fa-times text-danger"></i></button>
+						</form>
+					</td>
+				</tr>
+				{% endfor %}
     	    </tbody>
-        </table>
+		</table>
 	{% else %}
 	<p>Il n'y a pas de commentaires en attente de validation.</p>
 	{% endif %}

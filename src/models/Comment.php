@@ -43,7 +43,8 @@ final class Comment extends AbstractEntity
         $query = $db->prepare("SELECT comment.id, comment.modification_date AS modificationdate, comment.content, user.name AS author, post.id AS postid, user.id AS userid FROM comment LEFT JOIN post ON comment.post_id = post.id LEFT JOIN user ON comment.user_id = user.id WHERE valid = 0 ORDER BY modificationdate DESC");
 
         $query->execute();
-	$comments = array();
+	    $comments = array();
+
         foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row){
             $comments[] = new self($row);
         }
@@ -79,10 +80,9 @@ final class Comment extends AbstractEntity
      * Insert this comment into database
      * @return bool states if record was successful or not.
      */
-    public function createOne(array $data): bool
+    public static function createOne(array $data): bool
     {
         $comment = new self($data);
-
         $db = self::dbconnect();
 
         $query = $db->prepare('INSERT INTO comment (modification_date, post_id, user_id, content) VALUES (NOW(), :post, :user, :content)');
@@ -90,7 +90,9 @@ final class Comment extends AbstractEntity
         $query->bindValue(':user', $comment->userid, \PDO::PARAM_INT);
         $query->bindValue(':content', $comment->content, \PDO::PARAM_STR);
 
-        return $query->execute();
+        $result = $query->execute();
+
+        return $result;
     }
 
     /**
@@ -113,7 +115,7 @@ final class Comment extends AbstractEntity
      * @param int $id --> comment id
      * @return bool states if record was successful or not.
      */
-    public function deleteOne(int $id): bool
+    public static function deleteOne(int $id): bool
     {
         $db = self::dbconnect();
         $query = $db->prepare('DELETE FROM comment WHERE id = :id');
@@ -127,13 +129,14 @@ final class Comment extends AbstractEntity
      * @param int $id --> comment id
      * @return bool states if record was successful or not.
      */
-    public function validateOne(int $id): bool
+    public static function validateOne(int $id): bool
     {
         $db = self::dbconnect();
         $query = $db->prepare('UPDATE comment SET valid = 1 WHERE id = :id');
         $query->bindValue(':id', $id, \PDO::PARAM_INT);
+        $result = $query->execute();
 
-        return $query->execute();
+        return $result;
     }
 
     public function setId(int $id): void
