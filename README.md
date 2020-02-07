@@ -9,4 +9,4 @@ Gestion des commentaires : Créez un commentaire, et celi ci sera soumis à vali
 1. Cloner le projet ou télécharger l'archive.
 2. A la racine, taper "composer update"
 3. En cas d'utilisation de nginx, configurer l'url rewriting et le serveur dans le répertoire public.
-4. Configurer vos accès à votre base de données avec le fichier "config.template".  
+4. Configurer vos accès à votre base de données avec le fichier "config.template".
