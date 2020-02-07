@@ -19,7 +19,7 @@ class Router
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
-	}
+	    }
 
         $this->path = ltrim($_SERVER['REQUEST_URI'], '/');
         $this->post = $_POST;
@@ -54,13 +54,13 @@ class Router
             }
         }
 		
-	try {
-		$controller = $this->customController();
-	} catch (\Exception $e) {
-		$_SESSION['message_content'] = $e->getmessage();
-                $_SESSION['message_type'] = "error";
-		$controller = new HomeController();
-	}
+        try {
+            $controller = $this->customController();
+        } catch (\Exception $e) {
+            $_SESSION['message_content'] = $e->getmessage();
+                    $_SESSION['message_type'] = "error";
+            $controller = new HomeController();
+        }
     }
 
     private function customController()
@@ -69,8 +69,9 @@ class Router
         if (substr($this->path, -1) == "/") {
             substr($this->path, 0, -1);
         }
+
         $explodedpath = explode('/', parse_url($this->path, PHP_URL_PATH), 2);
-	$rootpath = $explodedpath[0];	
+	    $rootpath = $explodedpath[0];
 
 	if (count($explodedpath) == 1) {
 	    $this->path = '';

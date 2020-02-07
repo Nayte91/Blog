@@ -92,11 +92,11 @@ final class FormController extends AbstractController
     {
         if (array_search("", $form)) {
             throw new \Exception("bien joué le formulaire vide");
-	}
+	    }
 
         if (!User::createOne($form)) {
             throw new \Exception("Création ratée");
-	}
+	    }
 
         $this->message = "Compte créé, connectez-vous";
     }
@@ -135,7 +135,7 @@ final class FormController extends AbstractController
             throw new \Exception("Pas admin, que fais tu là ?");
 	    }
 
-        if(!Post::createOne($form)) {
+        if (!Post::createOne($form)) {
             throw new \Exception("Billet non ajouté");
 	    }
 

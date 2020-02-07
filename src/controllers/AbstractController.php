@@ -10,6 +10,15 @@ abstract class AbstractController
     protected FilesystemLoader $loader;
     protected array $table;
 
+
+    /**
+     * Handle the twig rendering for all controllers
+     * @param string $path
+     * @param array ...$params
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     protected function render(string $path, array ...$params): void
     {
         $this->loader = new FilesystemLoader('../templates');

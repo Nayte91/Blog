@@ -169,18 +169,8 @@ final class Comment extends AbstractEntity
         $this->postid = $postid;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getPostid(): int
     {
         return $this->postid;
-    }
-
-    public function getModificationdate(): string
-    {
-        return $this->modificationdate->format("%W, %e %M %Y");
     }
 }

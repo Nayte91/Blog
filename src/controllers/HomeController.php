@@ -10,15 +10,6 @@ final class HomeController extends AbstractController
     {
         $posts = Post::retrieveLatest(5);
 
-        // Test
-        $foo = [
-            ['name' => 'Alice'],
-            ['name' => 'Bob'],
-            ['name' => 'Charlie'],
-            ['name' => 'David' ],
-            ['name' => 'Eve'],
-        ];
-
-        $this->render('home.html.twig', ['posts' => $posts, 'foo' => $foo]);
+        $this->render('home.html.twig', ['posts' => $posts]);
     }
 }
