@@ -2,10 +2,9 @@
 
 namespace P5blog;
 
+use P5blog\controllers\AbstractController;
 use P5blog\controllers\HomeController;
 use P5blog\controllers\FormController;
-use P5blog\controllers\BlogController;
-use P5blog\controllers\AdminController;
 
 class Router
 {
@@ -41,8 +40,8 @@ class Router
 	        }
         }
 
-        //Si c'est une requête POST, lancer le form controller
-        if ($this->server["REQUEST_METHOD"] != "GET") {
+        //form controller in case of POST request
+        if ($this->server["REQUEST_METHOD"] == "POST") {
             $fc = new FormController();
             try {
                 $fc->dispatch($this->post);
@@ -53,19 +52,24 @@ class Router
                 $_SESSION['message_type'] = "error";
             }
         }
-		
+
+        //dynamic router call
         try {
             $controller = $this->customController();
         } catch (\Exception $e) {
             $_SESSION['message_content'] = $e->getmessage();
-                    $_SESSION['message_type'] = "error";
+            $_SESSION['message_type'] = "error";
             $controller = new HomeController();
         }
     }
 
-    private function customController()
+    /**
+     * Try to create dynamically a controller based on the first part of the URL.
+     * @return AbstractController
+     * @throws \Exception
+     */
+    private function customController(): AbstractController
     {
-        //Virer le "/" de fin d'url si il y en a un
         if (substr($this->path, -1) == "/") {
             substr($this->path, 0, -1);
         }
@@ -73,22 +77,22 @@ class Router
         $explodedpath = explode('/', parse_url($this->path, PHP_URL_PATH), 2);
 	    $rootpath = $explodedpath[0];
 
-	if (count($explodedpath) == 1) {
-	    $this->path = '';
-	} else {
-	    $this->path = $explodedpath[1];
-	}	
+        if (count($explodedpath) == 1) {
+            $this->path = '';
+        } else {
+            $this->path = $explodedpath[1];
+        }
 
-	$classname = "P5blog\\controllers\\" . ucfirst(strtolower($rootpath)) . "Controller";
+        $classname = "P5blog\\controllers\\" . ucfirst(strtolower($rootpath)) . "Controller";
 
-	if ($rootpath == '') {
-	    return new HomeController;
-	}
+        if ($rootpath == '') {
+            return new HomeController;
+        }
 
-	if (!class_exists($classname)) {
-	    throw new \Exception("C'est pas le bon site là");
-	}
+        if (!class_exists($classname)) {
+            throw new \Exception("C'est pas le bon site là");
+        }
 
-	return new $classname($this->path);
+        return new $classname($this->path);
     }
 }

@@ -48,7 +48,7 @@ final class BlogController extends AbstractController
 
     private function viewPost(int $id): void
     {
-        $post = Post::retrieveFromId($id);
+        $post = Post::readOne($id);
         $post->comments = Comment::countFromPost($id);
         $comments = Comment::retrieveFromPost($id);
 
@@ -63,6 +63,7 @@ final class BlogController extends AbstractController
             } catch (\Exception $e) {
                 throw new \Exception("Il n'existe pas ce billet");
             }
+
             $this->render('blog/editpost.html.twig', ['post' => $post]);
         } else {
             $this->render('blog/editpost.html.twig');

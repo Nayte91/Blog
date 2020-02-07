@@ -10,7 +10,6 @@ abstract class AbstractController
     protected FilesystemLoader $loader;
     protected array $table;
 
-
     /**
      * Handle the twig rendering for all controllers
      * @param string $path

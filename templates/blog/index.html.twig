@@ -6,7 +6,7 @@
     <article>
         {% for post in posts %}
             <h2><a href="\blog\post\{{ post.id }}">{{ post.title|e }}</a></h2>
-            <strong>By {{ post.name }} on {{ post.date }}</strong>
+            <strong>By {{ post.author }} on {{ post.modificationdate|date('Y-m-d H:i:s') }}</strong>
             <p>{{ post.heading|e }}</p>
             <p><i><small>{{ post.comments }} commentaire{% if post.comments > 1 %}s{% endif %}</small></i></p>
             {%if user.admin %}

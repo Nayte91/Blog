@@ -10,12 +10,12 @@
     <h1>{{ post.title }}</h1>
     <h4><i>{{ post.heading }}</i></h4>
     {{ post.content | raw }}
-    <p align="right"><i>Ecrit par <strong>{{ post.author }}</strong>, le <strong>{{ post.modificationdate }}</strong></i></p>
+    <p align="right"><i>Ecrit par <strong>{{ post.author }}</strong>, le <strong>{{ post.modificationdate|date('Y-m-d H:i:s') }}</strong></i></p>
     <hr />
     <h4>Commentaires</h4>
     {% if post.comments > 0 %}
         {% for comment in comments %}
-            <h5>{{ comment.name }}</h5>
+            <h5>{{ comment.author }}</h5>
             <p>{{ comment.content }}</p>
         {% endfor %}
     {% else %}

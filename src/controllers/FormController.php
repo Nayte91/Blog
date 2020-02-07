@@ -110,7 +110,7 @@ final class FormController extends AbstractController
             throw new \Exception("Petit coquinou");
 	    }
 
-        if (!User::deleteFromId($_SESSION['id'])) {
+        if (!User::deleteOne($_SESSION['id'])) {
             throw new \Exception("Destruction ratée ?");
 	    }
 
@@ -144,7 +144,7 @@ final class FormController extends AbstractController
 
     private function deletePost(array $form): void
     {
-        if (!Post::deleteFromId($form['postid'])) {
+        if (!Post::deleteOne($form['postid'])) {
             throw new \Exception("Impossible de supprimer ce billet...");
 	    }
 
