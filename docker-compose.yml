@@ -1,0 +1,40 @@
+services:
+  server:
+    container_name: Caddy
+    depends_on:
+      - backend
+    image: caddy
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/app
+      - ./system/server/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+  backend:
+    container_name: php
+    depends_on:
+      - database
+    build:
+      context: .
+      dockerfile: system/backend/Dockerfile
+    volumes:
+      - .:/app
+      - ./system/backend/php-custom.ini:/usr/local/etc/php/php.ini
+
+  database:
+    container_name: mysql
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: toto
+      MYSQL_DATABASE: p5blog
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  caddy_data:
+  caddy_config:
+  mysql_data:

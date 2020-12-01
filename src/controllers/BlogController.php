@@ -59,7 +59,7 @@ final class BlogController extends AbstractController
     {
         if ($id) {
             try {
-                $post = Post::retrieveFromId($id);
+                $post = Post::readOne($id);
             } catch (\Exception $e) {
                 throw new \Exception("Il n'existe pas ce billet");
             }

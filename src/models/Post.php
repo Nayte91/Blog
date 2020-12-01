@@ -16,7 +16,7 @@ final class Post extends AbstractEntity
     {
         $db = self::dbconnect();
 
-        if ($number == 0){
+        if ($number == 0) {
             $query = $db->prepare("SELECT post.id, post.title, post.modification_date AS modificationdate, post.heading, post.content, user.name as author, user.id AS userid FROM post LEFT JOIN user ON post.author = user.id ORDER BY modification_date DESC");
         } else {
             $query = $db->prepare("SELECT post.id, post.title, post.modification_date AS modificationdate, post.heading, post.content, user.name as author, user.id AS userid FROM post LEFT JOIN user ON post.author = user.id ORDER BY modification_date DESC LIMIT :number");
@@ -70,7 +70,7 @@ final class Post extends AbstractEntity
         $db = self::dbconnect();
         $query = $db->prepare('UPDATE post SET title=?, heading=?, content=? WHERE id=?');
 
-        return $query->execute([$post->title, $post->heading, $post->content, $post->id ]);
+        return $query->execute([$post->title, $post->heading, $post->content, $post->id]);
     }
 
     public static function deleteOne(int $id): bool

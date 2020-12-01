@@ -5,6 +5,7 @@ namespace P5blog;
 use P5blog\controllers\AbstractController;
 use P5blog\controllers\HomeController;
 use P5blog\controllers\FormController;
+use P5blog\services\Container;
 
 class Router
 {
@@ -13,6 +14,8 @@ class Router
     private array $get;
     private array $server;
     private array $message = [];
+
+    public $container;
 
     public function __construct()
     {

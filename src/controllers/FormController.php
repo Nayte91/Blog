@@ -144,7 +144,7 @@ final class FormController extends AbstractController
 
     private function deletePost(array $form): void
     {
-        if (!Post::deleteOne($form['postid'])) {
+        if (! Post::deleteOne($form['postid'])) {
             throw new \Exception("Impossible de supprimer ce billet...");
 	    }
 
