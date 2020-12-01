@@ -1,6 +1,6 @@
-:80
-
-root * /app/public
-php_fastcgi php:9000
-
-file_server
+blog.freelooser.net:80 {
+    root * /app/public
+    php_fastcgi php:9000
+    encode gzip
+    file_server
+}
