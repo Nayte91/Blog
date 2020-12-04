@@ -9,6 +9,6 @@ Gestion des commentaires : Créez un commentaire, et celi ci sera soumis à vali
 1. Cloner le projet ou télécharger l'archive.
 2. A la racine, taper "composer update"
 3. En cas d'utilisation de nginx, configurer l'url rewriting et le serveur dans le répertoire public.
-4. Importer le schéma de base mysql depuis le fichier "mysql-template.sql" (structure seulement)
-5. Configurer vos accès à votre base de données avec le fichier "config.template".
-6. Bien ajouter les droits administrateurs au premier utilisateur ajouté en base !
+4. Configurer vos accès à votre base de données avec le fichier "config.template".
+5. Structurer la bdd en éxécutant le fichier "docker-compose exec backend php mysql-import.php"
+6. Utilisateur créé par défaut avec les droits admin : Nayte//admin
