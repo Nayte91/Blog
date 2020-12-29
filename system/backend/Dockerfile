@@ -1,4 +1,4 @@
-FROM php:rc-fpm-alpine
+FROM php:7.4-fpm-alpine
 
 RUN apk add --no-cache --update --virtual buildDeps build-base autoconf \
      && pecl install xdebug > /dev/null \
