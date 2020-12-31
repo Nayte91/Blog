@@ -1,18 +1,16 @@
 <?php
 
-//Copy this tempate as config.php and set-up the variables !
-
 /* MySQL server Hostname */
-$host = 'localhost';
+$host = 'database';
 
 /* MySQL account username */
-$login = 'toto';
+$login = 'root';
 
 /* MySQL account password */
 $pass = 'toto';
 
 /* The schema you want to use */
-$schema = 'p5blog';
+$schema = 'blog';
 
 /* Connection string, or data source name */
 $dsn = 'mysql:host=' . $host . ';dbname=' . $schema . ';charset=utf8';

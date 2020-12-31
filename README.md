@@ -7,8 +7,7 @@ Gestion des commentaires : Créez un commentaire, et celi ci sera soumis à vali
 
 ## Comment installer ?
 1. Cloner le projet ou télécharger l'archive.
-2. A la racine, taper "composer update"
-3. En cas d'utilisation de nginx, configurer l'url rewriting et le serveur dans le répertoire public.
-4. Configurer vos accès à votre base de données avec le fichier "config.template".
-5. Structurer la bdd en éxécutant le fichier "docker-compose exec backend php mysql-import.php"
-6. Utilisateur créé par défaut avec les droits admin : Nayte//admin
+2. Lancer les containers en tapant `docker-compose up -d --build`
+3. A la racine du projet, taper `docker run --rm -it -v $PWD:/app -u $(id -u):$(id -g) composer install`
+5. Structurer la bdd en éxecutant le fichier `docker-compose exec backend php mysql-import.php`
+6. Utilisateur créé par défaut avec les droits admin : admin//azerty

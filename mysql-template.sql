@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `p5blog` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `p5blog`;
+CREATE DATABASE  IF NOT EXISTS `blog` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `blog`;
 -- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
 --
--- Host: localhost    Database: p5blog
+-- Host: localhost    Database: blog
 -- ------------------------------------------------------
 -- Server version	5.7.24
 
@@ -80,11 +80,11 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping events for database 'p5blog'
+-- Dumping events for database 'blog'
 --
 
 --
--- Dumping routines for database 'p5blog'
+-- Dumping routines for database 'blog'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
