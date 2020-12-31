@@ -1,7 +1,7 @@
 <?php
 
 /* MySQL server Hostname */
-$host = 'database';
+$host = 'blog-mysql';
 
 /* MySQL account username */
 $login = 'root';

@@ -2,6 +2,7 @@ version: "3.4"
 
 services:
   server:
+    container_name: blog-caddy
     image: caddy
     depends_on:
       - backend
@@ -12,13 +13,10 @@ services:
       - caddy_config:/config
     labels:
       traefik.enable: true
-      traefik.http.routers.blog.rule: Host(`blog.anagraph.org`)
-      traefik.http.routers.blog.entrypoints: web
-    networks:
-      - blog
-      - proxy
+      traefik.http.routers.blog.rule: Host(`blog.localhost`)
 
   backend:
+    container_name: blog-php
     build:
       context: .
       dockerfile: system/backend/Dockerfile
@@ -27,18 +25,15 @@ services:
     volumes:
       - .:/app
       - ./system/backend/php-custom.ini:/usr/local/etc/php/php.ini
-    networks:
-      - blog
 
   database:
+    container_name: blog-mysql
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: toto
       MYSQL_DATABASE: blog
     volumes:
       - mysql_data:/var/lib/mysql
-    networks:
-      - blog
 
 volumes:
   caddy_data:
@@ -46,6 +41,6 @@ volumes:
   mysql_data:
 
 networks:
-  blog:
-  proxy:
-    external: true
+  default:
+    external:
+      name: proxy
